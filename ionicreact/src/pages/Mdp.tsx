@@ -19,20 +19,20 @@ import {
   IonText,
 } from "@ionic/react";
 import {
-  starOutline,
-  star,
+  textOutline,
+  logoEuro,
+  logoUsd,
+  logoYen,
   sunny,
   moon,
-  personAdd,
+  text,
 } from "ionicons/icons";
 
 import "./Mdp.scss";
 import { connect } from "../data/connect";
 import { setDarkMode } from "../data/user/user.actions";
-import { RouteComponentProps } from "react-router";
 import generateur from "generate-password";
 import ShareSocialFab from "../components/ShareSocialFab";
-//interface OwnProps extends RouteComponentProps {}
 
 interface StateProps {
   darkMode: boolean;
@@ -40,20 +40,36 @@ interface StateProps {
 interface DispatchProps {
   setDarkMode: typeof setDarkMode;
 }
-//interface MdpProps extends OwnProps, StateProps, DispatchProps { }
+
 interface MdpProps extends StateProps, DispatchProps {}
 
 const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
   const [password, setPassword] = useState("");
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
-  const isFavorite = false;
+  const [tooShortError, setTooShortError] = useState(false);
+  const isFavorite = true;
 
   const toggleFavorite = () => {
     //isFavorite = !isFavorite;// ? removeFavorite(post.id) : addFavorite(post.id);
   };
+  const replaceWithEuro = () => {
+    let source:string = password;
+    console.log(`replaceWithEuro b source ${source} `);
+    for (let i = 0; i < 3; i++) {
+      source = source.replace('3','€');
+      console.log(`replaceWithEuro f source ${source} `);
+    }
+    console.log(`replaceWithEuro e source ${source} `);
+    setPassword(source);
+    /*if (password) {
+      setPassword(password.replace('3','€').replace('3','&'));
+
+    }*/
+  };
   const mdp = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log(`mdp ${password}`);
     setFormSubmitted(true);
 
     if (!password) {
@@ -61,15 +77,24 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
     }
 
     if (password) {
-      console.log( `mdp ${e}`);
       //await setIsLoggedIn(true);
       //history.push('/tabs/schedule', {direction: 'none'});
     }
   };
-  function handleChangePwd() {
-    console.log( `handleChangePwd ${password}`);
-
-  }
+  const handleChangePwd = async (e: string) => {
+    await setPassword(e);
+    console.log(`handleChangePwd ${password} ${e}`);
+    if (!password) {
+      setPasswordError(true);
+    } else {
+      setTooShortError(password.length < 12);
+      /*if (password.length<12) {
+        setTooShortError(true);
+      } else {
+        setTooShortError(false);
+      }*/
+    }
+  };
   return (
     <IonPage id="mdp-page">
       <IonHeader>
@@ -79,20 +104,10 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
           </IonButtons>
           <IonTitle>Générateur de mot de passe</IonTitle>
           <IonButtons slot="end">
-            <IonButton>
+            <IonButton onClick={() => setDarkMode(!darkMode)}>
               <IonIcon slot="start" icon={sunny}></IonIcon>
-              <IonToggle
-                checked={darkMode}
-                onClick={() => setDarkMode(!darkMode)}
-              />
+              <IonToggle checked={darkMode} />
               <IonIcon slot="end" icon={moon}></IonIcon>
-            </IonButton>
-            <IonButton onClick={() => toggleFavorite()}>
-              {isFavorite ? (
-                <IonIcon slot="icon-only" icon={star}></IonIcon>
-              ) : (
-                <IonIcon slot="icon-only" icon={starOutline}></IonIcon>
-              )}
             </IonButton>
           </IonButtons>
         </IonToolbar>
@@ -101,13 +116,6 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
         <form noValidate onSubmit={mdp}>
           <IonList>
             <IonItem>
-              <IonInput
-                onIonChange={handleChangePwd}
-                name="password"
-                value={password}
-                required
-              ></IonInput>{" "}
-              <IonLabel>Trop court</IonLabel>
               <div className="container">
                 <strong>Mot de passe aléatoire proposé:</strong>
                 <p>
@@ -121,22 +129,33 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
                   })}
                 </p>
                 <strong>Votre mot de passe personnalisé:</strong>
-                <ShareSocialFab />
+                <IonInput
+                  onIonChange={(e) => handleChangePwd(e.detail.value!)} //{handleChangePwd}
+                  name="password"
+                  value={password}
+                  required
+                ></IonInput>{" "}
               </div>
             </IonItem>
 
-            <IonItem>
-              <IonLabel position="stacked" color="primary">
-                Password
-              </IonLabel>
+            {/* <IonItem>
+
               <IonInput
                 name="password"
-                type="password"
                 value={password}
                 onIonChange={(e) => setPassword(e.detail.value!)}
               ></IonInput>
-            </IonItem>
-
+            </IonItem> */}
+            {passwordError && (
+              <IonText color="danger">
+                <p className="ion-padding-start">Erreur</p>
+              </IonText>
+            )}
+            {tooShortError && (
+              <IonText color="warning">
+                <p className="ion-padding-start">Trop court</p>
+              </IonText>
+            )}
             {formSubmitted && passwordError && (
               <IonText color="danger">
                 <p className="ion-padding-start">Password is required</p>
@@ -145,14 +164,36 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
           </IonList>
 
           <IonRow>
+            <IonCol></IonCol>
+            <IonCol>
+              <IonButtons>
+                <IonButton onClick={() => toggleFavorite()}>
+                  {isFavorite ? (
+                    <IonIcon slot="icon-only" icon={text}></IonIcon>
+                  ) : (
+                    <IonIcon slot="icon-only" icon={textOutline}></IonIcon>
+                  )}
+                </IonButton>
+                <IonButton onClick={() => toggleFavorite()}>
+                  <IonIcon slot="icon-only" icon={logoYen}></IonIcon>
+                </IonButton>
+                <IonButton onClick={() => toggleFavorite()}>
+                  <IonIcon slot="icon-only" icon={logoEuro}></IonIcon>
+                </IonButton>
+                <IonButton onClick={() => toggleFavorite()}>
+                  <IonIcon slot="icon-only" icon={logoUsd}></IonIcon>
+                </IonButton>
+                <ShareSocialFab />
+              </IonButtons>
+            </IonCol>
             <IonCol>
               <IonButton type="submit" expand="block">
-                Mdp
+                3
               </IonButton>
             </IonCol>
             <IonCol>
-              <IonButton routerLink="/signup" color="light" expand="block">
-                Signup
+              <IonButton color="light" expand="block"  onClick={() => replaceWithEuro()}>
+                <IonIcon slot="icon-only" icon={logoEuro}></IonIcon>
               </IonButton>
             </IonCol>
           </IonRow>
