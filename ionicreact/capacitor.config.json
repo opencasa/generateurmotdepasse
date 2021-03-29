@@ -1,0 +1,8 @@
+{
+  "appId": "fr.agglocasa.generateurmotdepasse",
+  "appName": "generateurmotdepasse",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "build",
+  "cordova": {}
+}

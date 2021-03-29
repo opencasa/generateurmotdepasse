@@ -1,0 +1,7 @@
+{
+  "name": "generateurmotdepasse",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
