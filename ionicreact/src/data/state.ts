@@ -1,20 +1,8 @@
 import { combineReducers } from './combineReducers';
-import { sessionsReducer } from './sessions/sessions.reducer';
 import { userReducer } from './user/user.reducer';
 
 export const initialState: AppState = {
-  data: {
-    schedule: { groups: [] } as any,
-    sessions: [],
-    speakers: [],
-    favorites: [],
-    locations: [],
-    allTracks: [],
-    filteredTracks: [],
-    mapCenterId: 0,
-    loading: false,
-    menuEnabled: true
-  },
+  
   user: {
     darkMode: false,
     isLoggedin: false,
@@ -23,7 +11,6 @@ export const initialState: AppState = {
 };
 
 export const reducers = combineReducers({
-  data: sessionsReducer,
   user: userReducer
 });
 
