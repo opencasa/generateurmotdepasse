@@ -8,8 +8,13 @@ import {
   IonContent,
   IonPage,
   IonButtons,
+  IonGrid,
   IonRow,
   IonCol,
+  IonCardHeader,
+  IonCardContent,
+  IonCard,
+  IonLabel,
   IonButton,
   IonList,
   IonItem,
@@ -52,10 +57,10 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
     //isFavorite = !isFavorite;// ? removeFavorite(post.id) : addFavorite(post.id);
   };
   const replaceWithEuro = () => {
-    let source:string = password;
+    let source: string = password;
     console.log(`replaceWithEuro b source ${source} `);
     for (let i = 0; i < 3; i++) {
-      source = source.replace('3','€');
+      source = source.replace("3", "€");
       console.log(`replaceWithEuro f source ${source} `);
     }
     console.log(`replaceWithEuro e source ${source} `);
@@ -161,6 +166,122 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
             )}
           </IonList>
 
+          <IonGrid fixed>
+            <IonRow>
+              <IonCol size="12" size-md="6" key="1">
+                <IonCard className="category-card">
+                  <IonCardHeader>
+                    <IonItem
+                      button
+                      detail={false}
+                      lines="none"
+                      className="category-item"
+                    >
+
+                      <IonLabel>
+                        <h2>Remplacer les "e" par</h2>
+                        <p>j</p>
+                      </IonLabel>
+                    </IonItem>
+                  </IonCardHeader>
+                  <IonCardContent>
+                    <IonList lines="none">
+                        <IonItem
+                          detail={false}
+                          key="2"
+                        >
+                          <IonLabel>
+                            <h3>3</h3>
+                          </IonLabel>
+                        </IonItem>
+                      <IonItem
+                        detail={false}
+                      >
+                        <IonLabel>
+                          <h3>€</h3>
+                        </IonLabel>
+                      </IonItem>
+                    </IonList>
+                  </IonCardContent>
+                </IonCard>
+              </IonCol>
+              <IonCol size="12" size-md="6" key="1">
+                <IonCard className="category-card">
+                  <IonCardHeader>
+                    <IonItem
+                      button
+                      detail={false}
+                      lines="none"
+                      className="category-item"
+                    >
+
+                      <IonLabel>
+                        <h2>Remplacer les "e" par</h2>
+                        <p>j</p>
+                      </IonLabel>
+                    </IonItem>
+                  </IonCardHeader>
+                  <IonCardContent>
+                    <IonList lines="none">
+                        <IonItem
+                          detail={false}
+                          key="2"
+                        >
+                          <IonLabel>
+                            <h3>3</h3>
+                          </IonLabel>
+                        </IonItem>
+                      <IonItem
+                        detail={false}
+                      >
+                        <IonLabel>
+                          <h3>€</h3>
+                        </IonLabel>
+                      </IonItem>
+                    </IonList>
+                  </IonCardContent>
+                </IonCard>
+              </IonCol>
+              <IonCol size="12" size-md="6" key="1">
+                <IonCard className="category-card">
+                  <IonCardHeader>
+                    <IonItem
+                      button
+                      detail={false}
+                      lines="none"
+                      className="category-item"
+                    >
+
+                      <IonLabel>
+                        <h2>Remplacer les "e" par</h2>
+                        <p>j</p>
+                      </IonLabel>
+                    </IonItem>
+                  </IonCardHeader>
+                  <IonCardContent>
+                    <IonList lines="none">
+                        <IonItem
+                          detail={false}
+                          key="2"
+                        >
+                          <IonLabel>
+                            <h3>3</h3>
+                          </IonLabel>
+                        </IonItem>
+                      <IonItem
+                        detail={false}
+                      >
+                        <IonLabel>
+                          <h3>€</h3>
+                        </IonLabel>
+                      </IonItem>
+                    </IonList>
+                  </IonCardContent>
+                </IonCard>
+              </IonCol>
+            </IonRow>
+          </IonGrid>
+
           <IonRow>
             <IonCol></IonCol>
             <IonCol>
@@ -190,7 +311,11 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
               </IonButton>
             </IonCol>
             <IonCol>
-              <IonButton color="light" expand="block"  onClick={() => replaceWithEuro()}>
+              <IonButton
+                color="light"
+                expand="block"
+                onClick={() => replaceWithEuro()}
+              >
                 <IonIcon slot="icon-only" icon={logoEuro}></IonIcon>
               </IonButton>
             </IonCol>
