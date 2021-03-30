@@ -112,58 +112,59 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
         </IonToolbar>
       </IonHeader>
       <IonContent>
-
-      <IonGrid fixed>
+        <IonGrid fixed>
           <IonRow>
-
             <IonCol size="12">
+              <form noValidate onSubmit={mdp}>
+                <IonList>
+                  <IonItem>
+                    <div className="container">
+                      <strong>Mot de passe aléatoire proposé:</strong>
+                      <p>
+                        {generateur.generate({
+                          length: 12,
+                          numbers: true,
+                          lowercase: true,
+                          uppercase: true,
+                          excludeSimilarCharacters: true,
+                          strict: true,
+                        })}
+                      </p>
+                      <strong>
+                        Saisissez votre mot de passe personnalisé:
+                      </strong>
+                      <IonInput
+                        onIonChange={(e) => handleChangePwd(e.detail.value!)} //{handleChangePwd}
+                        name="password"
+                        value={password}
+                        required
+                      ></IonInput>{" "}
+                      <strong>Votre mot de passe sécurisé:</strong>
+                      <IonInput
+                        name="newPassword"
+                        value={newPassword}
+                      ></IonInput>
+                    </div>
+                  </IonItem>
 
-        <form noValidate onSubmit={mdp}>
-          <IonList>
-            <IonItem>
-              <div className="container">
-                <strong>Mot de passe aléatoire proposé:</strong>
-                <p>
-                  {generateur.generate({
-                    length: 12,
-                    numbers: true,
-                    lowercase: true,
-                    uppercase: true,
-                    excludeSimilarCharacters: true,
-                    strict: true,
-                  })}
-                </p>
-                <strong>Saisissez votre mot de passe personnalisé:</strong>
-                <IonInput
-                  onIonChange={(e) => handleChangePwd(e.detail.value!)} //{handleChangePwd}
-                  name="password"
-                  value={password}
-                  required
-                ></IonInput>{" "}
-                <strong>Votre mot de passe sécurisé:</strong>
-                <IonInput name="newPassword" value={newPassword}></IonInput>
-              </div>
-            </IonItem>
-
-            {/* {passwordError && (
+                  {/* {passwordError && (
               <IonText color="danger">
                 <p className="ion-padding-start">Erreur</p>
               </IonText>
             )} */}
-            {tooShortError && (
-              <IonText color="warning">
-                <p className="ion-padding-start">Trop court</p>
-              </IonText>
-            )}
-            {formSubmitted && passwordError && (
-              <IonText color="danger">
-                <p className="ion-padding-start">Texte requis</p>
-              </IonText>
-            )}
-          </IonList>
-        </form>
-
-        </IonCol>
+                  {tooShortError && (
+                    <IonText color="warning">
+                      <p className="ion-padding-start">Trop court</p>
+                    </IonText>
+                  )}
+                  {formSubmitted && passwordError && (
+                    <IonText color="danger">
+                      <p className="ion-padding-start">Texte requis</p>
+                    </IonText>
+                  )}
+                </IonList>
+              </form>
+            </IonCol>
           </IonRow>
         </IonGrid>
 
@@ -200,6 +201,20 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
                       <IonIcon slot="icon-only" color="warning" />
                       <IonLabel>€</IonLabel>
                     </IonFabButton>
+                    <IonFabButton
+                      color="primary"
+                      onClick={() => replaceChars()}
+                    >
+                      <IonIcon slot="icon-only" color="warning" />
+                      <IonLabel>3</IonLabel>
+                    </IonFabButton>
+                    <IonFabButton
+                      color="secondary"
+                      onClick={() => replaceChars()}
+                    >
+                      <IonIcon slot="icon-only" color="information" />
+                      <IonLabel>é</IonLabel>
+                    </IonFabButton>
                   </IonButtons>
                 </IonCardContent>
               </IonCard>
@@ -211,7 +226,7 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
                 <IonCardHeader>
                   <IonLabel>
                     <h2>
-                    {`${textReplace}`} "a"
+                      {`${textReplace}`} "a"
                       <br /> {`${textOccurences}`}
                       <IonRange
                         min={0}
