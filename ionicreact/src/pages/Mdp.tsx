@@ -19,23 +19,21 @@ import {
   IonList,
   IonItem,
   IonInput,
+  IonRange,
+  IonFabButton,
   IonText,
 } from "@ionic/react";
 import {
-  textOutline,
   logoEuro,
-  logoUsd,
-  logoYen,
+  arrowForwardCircleOutline,
   sunny,
   moon,
-  text,
 } from "ionicons/icons";
 
 import "./Mdp.scss";
 import { connect } from "../data/connect";
 import { setDarkMode } from "../data/user/user.actions";
 import generateur from "generate-password";
-import ShareSocialFab from "../components/ShareSocialFab";
 
 interface StateProps {
   darkMode: boolean;
@@ -48,10 +46,12 @@ interface MdpProps extends StateProps, DispatchProps {}
 
 const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
   const [password, setPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
   const [tooShortError, setTooShortError] = useState(false);
-  const isFavorite = true;
+
+  const [value, setValue] = useState(1);
 
   const toggleFavorite = () => {
     //isFavorite = !isFavorite;// ? removeFavorite(post.id) : addFavorite(post.id);
@@ -59,12 +59,12 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
   const replaceWithEuro = () => {
     let source: string = password;
     console.log(`replaceWithEuro b source ${source} `);
-    for (let i = 0; i < 3; i++) {
-      source = source.replace("3", "€");
+    for (let i = 0; i < value; i++) {
+      source = source.replace("e", "€");
       console.log(`replaceWithEuro f source ${source} `);
     }
     console.log(`replaceWithEuro e source ${source} `);
-    setPassword(source);
+    setNewPassword(source);
     /*if (password) {
       setPassword(password.replace('3','€').replace('3','&'));
 
@@ -141,19 +141,20 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
               </div>
             </IonItem>
 
-            {/* <IonItem>
+            <IonItem>
 
-              <IonInput
-                name="password"
-                value={password}
-                onIonChange={(e) => setPassword(e.detail.value!)}
-              ></IonInput>
-            </IonItem> */}
-            {passwordError && (
+
+{/*   onIonChange={(e) => setPassword(e.detail.value!)}*/}
+ <IonInput
+   name="newPassword"
+   value={newPassword}
+ ></IonInput>
+</IonItem>
+            {/* {passwordError && (
               <IonText color="danger">
                 <p className="ion-padding-start">Erreur</p>
               </IonText>
-            )}
+            )} */}
             {tooShortError && (
               <IonText color="warning">
                 <p className="ion-padding-start">Trop court</p>
@@ -161,166 +162,58 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
             )}
             {formSubmitted && passwordError && (
               <IonText color="danger">
-                <p className="ion-padding-start">Password is required</p>
+                <p className="ion-padding-start">Texte requis</p>
               </IonText>
             )}
           </IonList>
-
+          </form>
           <IonGrid fixed>
             <IonRow>
-              <IonCol size="12" size-md="6" key="1">
+              <IonCol size="4" >
                 <IonCard className="category-card">
                   <IonCardHeader>
-                    <IonItem
-                      button
-                      detail={false}
-                      lines="none"
-                      className="category-item"
-                    >
-
                       <IonLabel>
-                        <h2>Remplacer les "e" par</h2>
-                        <p>j</p>
+                        <h2>Remplacer <IonRange min={0} max={10} pin={true} value={value} onIonChange={e => setValue(e.detail.value as number)} /> e</h2>
                       </IonLabel>
-                    </IonItem>
                   </IonCardHeader>
                   <IonCardContent>
-                    <IonList lines="none">
-                        <IonItem
-                          detail={false}
-                          key="2"
-                        >
-                          <IonLabel>
-                            <h3>3</h3>
-                          </IonLabel>
-                        </IonItem>
-                      <IonItem
-                        detail={false}
-                      >
-                        <IonLabel>
-                          <h3>€</h3>
-                        </IonLabel>
-                      </IonItem>
-                    </IonList>
+                    <IonButtons>
+                      <IonFabButton color="instagram">
+                        <IonIcon slot="icon-only" color="warning" />
+                        <IonLabel>e</IonLabel>
+                      </IonFabButton>
+
+                      <IonButton onClick={() => toggleFavorite()}>
+                        <IonIcon
+                          slot="icon-only"
+                          icon={arrowForwardCircleOutline}
+                        ></IonIcon>
+                      </IonButton>
+                      <IonButton onClick={() => replaceWithEuro()}>
+                        <IonIcon slot="icon-only" icon={logoEuro}></IonIcon>
+                      </IonButton>
+                    </IonButtons>
                   </IonCardContent>
                 </IonCard>
               </IonCol>
-              <IonCol size="12" size-md="6" key="1">
-                <IonCard className="category-card">
-                  <IonCardHeader>
-                    <IonItem
-                      button
-                      detail={false}
-                      lines="none"
-                      className="category-item"
-                    >
 
-                      <IonLabel>
-                        <h2>Remplacer les "e" par</h2>
-                        <p>j</p>
-                      </IonLabel>
-                    </IonItem>
-                  </IonCardHeader>
-                  <IonCardContent>
-                    <IonList lines="none">
-                        <IonItem
-                          detail={false}
-                          key="2"
-                        >
-                          <IonLabel>
-                            <h3>3</h3>
-                          </IonLabel>
-                        </IonItem>
-                      <IonItem
-                        detail={false}
-                      >
-                        <IonLabel>
-                          <h3>€</h3>
-                        </IonLabel>
-                      </IonItem>
-                    </IonList>
-                  </IonCardContent>
-                </IonCard>
-              </IonCol>
-              <IonCol size="12" size-md="6" key="1">
-                <IonCard className="category-card">
-                  <IonCardHeader>
-                    <IonItem
-                      button
-                      detail={false}
-                      lines="none"
-                      className="category-item"
-                    >
-
-                      <IonLabel>
-                        <h2>Remplacer les "e" par</h2>
-                        <p>j</p>
-                      </IonLabel>
-                    </IonItem>
-                  </IonCardHeader>
-                  <IonCardContent>
-                    <IonList lines="none">
-                        <IonItem
-                          detail={false}
-                          key="2"
-                        >
-                          <IonLabel>
-                            <h3>3</h3>
-                          </IonLabel>
-                        </IonItem>
-                      <IonItem
-                        detail={false}
-                      >
-                        <IonLabel>
-                          <h3>€</h3>
-                        </IonLabel>
-                      </IonItem>
-                    </IonList>
-                  </IonCardContent>
-                </IonCard>
-              </IonCol>
             </IonRow>
           </IonGrid>
 
           <IonRow>
             <IonCol></IonCol>
-            <IonCol>
-              <IonButtons>
-                <IonButton onClick={() => toggleFavorite()}>
-                  {isFavorite ? (
-                    <IonIcon slot="icon-only" icon={text}></IonIcon>
-                  ) : (
-                    <IonIcon slot="icon-only" icon={textOutline}></IonIcon>
-                  )}
-                </IonButton>
-                <IonButton onClick={() => toggleFavorite()}>
-                  <IonIcon slot="icon-only" icon={logoYen}></IonIcon>
-                </IonButton>
-                <IonButton onClick={() => toggleFavorite()}>
-                  <IonIcon slot="icon-only" icon={logoEuro}></IonIcon>
-                </IonButton>
-                <IonButton onClick={() => toggleFavorite()}>
-                  <IonIcon slot="icon-only" icon={logoUsd}></IonIcon>
-                </IonButton>
-                <ShareSocialFab />
-              </IonButtons>
-            </IonCol>
+            <IonCol></IonCol>
             <IonCol>
               <IonButton type="submit" expand="block">
-                3
+                Copier
               </IonButton>
             </IonCol>
-            <IonCol>
-              <IonButton
-                color="light"
-                expand="block"
-                onClick={() => replaceWithEuro()}
-              >
-                <IonIcon slot="icon-only" icon={logoEuro}></IonIcon>
-              </IonButton>
-            </IonCol>
+
           </IonRow>
-        </form>
+
+        <IonLabel>
+          <p>Version Alpha 1.0.20210330</p>
+        </IonLabel>
       </IonContent>
     </IonPage>
   );
