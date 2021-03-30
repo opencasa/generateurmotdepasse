@@ -24,8 +24,6 @@ import {
   IonText,
 } from "@ionic/react";
 import {
-  logoEuro,
-  arrowForwardCircleOutline,
   sunny,
   moon,
 } from "ionicons/icons";
@@ -51,25 +49,23 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
   const [passwordError, setPasswordError] = useState(false);
   const [tooShortError, setTooShortError] = useState(false);
 
-  const [eOccurences, setEOccurences] = useState(1);
+  const [eOccurences, setEOccurences] = useState(0);
+  const [aOccurences, setAOccurences] = useState(0);
 
-  const toggleFavorite = () => {
-    //isFavorite = !isFavorite;// ? removeFavorite(post.id) : addFavorite(post.id);
-  };
-  const replaceWithEuro = () => {
+  const replaceChars = () => {
     let source: string = password.toLocaleLowerCase();
-    console.log(`replaceWithEuro b source ${source} `);
     for (let i = 0; i < eOccurences; i++) {
       source = source.replace("e", "€");
-      console.log(`replaceWithEuro f source ${source} `);
     }
+    for (let i = 0; i < aOccurences; i++) {
+      source = source.replace("a", "@");
+    }
+
     console.log(`replaceWithEuro e source ${source} `);
     setNewPassword(source);
-    /*if (password) {
-      setPassword(password.replace('3','€').replace('3','&'));
 
-    }*/
   };
+
   const mdp = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log(`mdp ${password}`);
@@ -162,6 +158,7 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
         </form>
         <IonGrid fixed>
           <IonRow>
+            {/* e */}
             <IonCol size="4">
               <IonCard className="category-card">
                 <IonCardHeader>
@@ -184,19 +181,54 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
                 </IonCardHeader>
                 <IonCardContent>
                   <IonButtons>
-                    <IonFabButton color="instagram" onClick={() => replaceWithEuro()}>
+                    <IonFabButton
+                      color="instagram"
+                      onClick={() => replaceChars()}
+                    >
                       <IonIcon slot="icon-only" color="warning" />
                       <IonLabel>€</IonLabel>
                     </IonFabButton>
-                    <IonButton onClick={() => toggleFavorite()}>
-                      <IonIcon
-                        slot="icon-only"
-                        icon={arrowForwardCircleOutline}
-                      ></IonIcon>
-                    </IonButton>
-                    <IonButton onClick={() => replaceWithEuro()}>
+
+                    {/* <IonButton onClick={() => replaceWithEuro()}>
                       <IonIcon slot="icon-only" icon={logoEuro}></IonIcon>
-                    </IonButton>
+                    </IonButton> */}
+                  </IonButtons>
+                </IonCardContent>
+              </IonCard>
+            </IonCol>
+
+            {/* a */}
+            <IonCol size="4">
+              <IonCard className="category-card">
+                <IonCardHeader>
+                  <IonLabel>
+                    <h2>
+                      Remplacer la lettre "a"
+                      <br /> nombre d'occurences:{" "}
+                      <IonRange
+                        min={0}
+                        max={10}
+                        pin={true}
+                        value={aOccurences}
+                        onIonChange={(e) =>
+                          setAOccurences(e.detail.value as number)
+                        }
+                      />{" "}
+                      Choisissez le caractère de substitution:
+                    </h2>
+                  </IonLabel>
+                </IonCardHeader>
+                <IonCardContent>
+                  <IonButtons>
+                    <IonFabButton
+                      color="instagram"
+                      onClick={() => replaceChars()}
+                    >
+                      <IonIcon slot="icon-only" color="warning" />
+                      <IonLabel>@</IonLabel>
+                    </IonFabButton>
+
+
                   </IonButtons>
                 </IonCardContent>
               </IonCard>
@@ -204,7 +236,7 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
           </IonRow>
         </IonGrid>
 
-        <IonRow>
+        {/* <IonRow>
           <IonCol></IonCol>
           <IonCol></IonCol>
           <IonCol>
@@ -212,7 +244,7 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
               Copier
             </IonButton>
           </IonCol>
-        </IonRow>
+        </IonRow> */}
 
         <IonLabel>
           <p>Version Alpha 1.0.20210330</p>
