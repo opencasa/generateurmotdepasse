@@ -5,7 +5,6 @@ export const initialState: AppState = {
   
   user: {
     darkMode: false,
-    isLoggedin: false,
     loading: false
   }
 };
