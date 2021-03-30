@@ -23,10 +23,7 @@ import {
   IonFabButton,
   IonText,
 } from "@ionic/react";
-import {
-  sunny,
-  moon,
-} from "ionicons/icons";
+import { sunny, moon } from "ionicons/icons";
 
 import "./Mdp.scss";
 import { connect } from "../data/connect";
@@ -52,6 +49,10 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
   const [eOccurences, setEOccurences] = useState(0);
   const [aOccurences, setAOccurences] = useState(0);
 
+  const textReplace: string = "Remplacer la lettre ";
+  const textOccurences: string = " Nombre d'occurences :";
+  const textSubstition: string = "Choisissez le caractère de substitution :";
+
   const replaceChars = () => {
     let source: string = password.toLocaleLowerCase();
     for (let i = 0; i < eOccurences; i++) {
@@ -63,7 +64,6 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
 
     console.log(`replaceWithEuro e source ${source} `);
     setNewPassword(source);
-
   };
 
   const mdp = async (e: React.FormEvent) => {
@@ -112,6 +112,12 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
         </IonToolbar>
       </IonHeader>
       <IonContent>
+
+      <IonGrid fixed>
+          <IonRow>
+
+            <IonCol size="12">
+
         <form noValidate onSubmit={mdp}>
           <IonList>
             <IonItem>
@@ -156,6 +162,11 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
             )}
           </IonList>
         </form>
+
+        </IonCol>
+          </IonRow>
+        </IonGrid>
+
         <IonGrid fixed>
           <IonRow>
             {/* e */}
@@ -164,8 +175,9 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
                 <IonCardHeader>
                   <IonLabel>
                     <h2>
-                      Remplacer la lettre "e"
-                      <br /> nombre d'occurences:{" "}
+                      {`${textReplace}`} "e"
+                      <br />
+                      {`${textOccurences}`}
                       <IonRange
                         min={0}
                         max={10}
@@ -174,8 +186,8 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
                         onIonChange={(e) =>
                           setEOccurences(e.detail.value as number)
                         }
-                      />{" "}
-                      Choisissez le caractère de substitution:
+                      />
+                      {`${textSubstition}`}
                     </h2>
                   </IonLabel>
                 </IonCardHeader>
@@ -188,10 +200,6 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
                       <IonIcon slot="icon-only" color="warning" />
                       <IonLabel>€</IonLabel>
                     </IonFabButton>
-
-                    {/* <IonButton onClick={() => replaceWithEuro()}>
-                      <IonIcon slot="icon-only" icon={logoEuro}></IonIcon>
-                    </IonButton> */}
                   </IonButtons>
                 </IonCardContent>
               </IonCard>
@@ -203,8 +211,8 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
                 <IonCardHeader>
                   <IonLabel>
                     <h2>
-                      Remplacer la lettre "a"
-                      <br /> nombre d'occurences:{" "}
+                    {`${textReplace}`} "a"
+                      <br /> {`${textOccurences}`}
                       <IonRange
                         min={0}
                         max={10}
@@ -213,8 +221,8 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
                         onIonChange={(e) =>
                           setAOccurences(e.detail.value as number)
                         }
-                      />{" "}
-                      Choisissez le caractère de substitution:
+                      />
+                      {`${textSubstition}`}
                     </h2>
                   </IonLabel>
                 </IonCardHeader>
@@ -227,8 +235,6 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
                       <IonIcon slot="icon-only" color="warning" />
                       <IonLabel>@</IonLabel>
                     </IonFabButton>
-
-
                   </IonButtons>
                 </IonCardContent>
               </IonCard>
