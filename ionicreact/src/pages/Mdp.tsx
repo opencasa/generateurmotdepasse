@@ -8,13 +8,11 @@ import {
   IonContent,
   IonPage,
   IonButtons,
-  IonMenuButton,
   IonRow,
   IonCol,
   IonButton,
   IonList,
   IonItem,
-  IonLabel,
   IonInput,
   IonText,
 } from "@ionic/react";
