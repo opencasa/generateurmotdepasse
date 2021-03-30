@@ -7,11 +7,15 @@
 * `cd ../ionicreact`
 * `npm install`
 * `ionic serve` pour tester
-* `npm run build` pour version de production
-* `cp -R ~/generateurmotdepasse/ionicreact/build/* ~/generateurmotdepasse/nodejs/public/`
 * `pm2 start ./bin/www  --watch`
 * `pm2 startup`
 
+## déploiement en production 
+* `cd ~/generateurmotdepasse/`
+* `git pull`
+* `cd ~/generateurmotdepasse/ionicreact/`
+* `npm run build`
+* `cp -R ~/generateurmotdepasse/ionicreact/build/* ~/generateurmotdepasse/nodejs/public/`
 
 ## stack technique:
 

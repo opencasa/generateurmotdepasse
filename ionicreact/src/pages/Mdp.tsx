@@ -51,15 +51,15 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
   const [passwordError, setPasswordError] = useState(false);
   const [tooShortError, setTooShortError] = useState(false);
 
-  const [value, setValue] = useState(1);
+  const [eOccurences, setEOccurences] = useState(1);
 
   const toggleFavorite = () => {
     //isFavorite = !isFavorite;// ? removeFavorite(post.id) : addFavorite(post.id);
   };
   const replaceWithEuro = () => {
-    let source: string = password;
+    let source: string = password.toLocaleLowerCase();
     console.log(`replaceWithEuro b source ${source} `);
-    for (let i = 0; i < value; i++) {
+    for (let i = 0; i < eOccurences; i++) {
       source = source.replace("e", "€");
       console.log(`replaceWithEuro f source ${source} `);
     }
@@ -131,25 +131,18 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
                     strict: true,
                   })}
                 </p>
-                <strong>Votre mot de passe personnalisé:</strong>
+                <strong>Saisissez votre mot de passe personnalisé:</strong>
                 <IonInput
                   onIonChange={(e) => handleChangePwd(e.detail.value!)} //{handleChangePwd}
                   name="password"
                   value={password}
                   required
                 ></IonInput>{" "}
+                <strong>Votre mot de passe sécurisé:</strong>
+                <IonInput name="newPassword" value={newPassword}></IonInput>
               </div>
             </IonItem>
 
-            <IonItem>
-
-
-{/*   onIonChange={(e) => setPassword(e.detail.value!)}*/}
- <IonInput
-   name="newPassword"
-   value={newPassword}
- ></IonInput>
-</IonItem>
             {/* {passwordError && (
               <IonText color="danger">
                 <p className="ion-padding-start">Erreur</p>
@@ -166,50 +159,60 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
               </IonText>
             )}
           </IonList>
-          </form>
-          <IonGrid fixed>
-            <IonRow>
-              <IonCol size="4" >
-                <IonCard className="category-card">
-                  <IonCardHeader>
-                      <IonLabel>
-                        <h2>Remplacer <IonRange min={0} max={10} pin={true} value={value} onIonChange={e => setValue(e.detail.value as number)} /> e</h2>
-                      </IonLabel>
-                  </IonCardHeader>
-                  <IonCardContent>
-                    <IonButtons>
-                      <IonFabButton color="instagram">
-                        <IonIcon slot="icon-only" color="warning" />
-                        <IonLabel>e</IonLabel>
-                      </IonFabButton>
-
-                      <IonButton onClick={() => toggleFavorite()}>
-                        <IonIcon
-                          slot="icon-only"
-                          icon={arrowForwardCircleOutline}
-                        ></IonIcon>
-                      </IonButton>
-                      <IonButton onClick={() => replaceWithEuro()}>
-                        <IonIcon slot="icon-only" icon={logoEuro}></IonIcon>
-                      </IonButton>
-                    </IonButtons>
-                  </IonCardContent>
-                </IonCard>
-              </IonCol>
-
-            </IonRow>
-          </IonGrid>
-
+        </form>
+        <IonGrid fixed>
           <IonRow>
-            <IonCol></IonCol>
-            <IonCol></IonCol>
-            <IonCol>
-              <IonButton type="submit" expand="block">
-                Copier
-              </IonButton>
+            <IonCol size="4">
+              <IonCard className="category-card">
+                <IonCardHeader>
+                  <IonLabel>
+                    <h2>
+                      Remplacer la lettre "e"
+                      <br /> nombre d'occurences:{" "}
+                      <IonRange
+                        min={0}
+                        max={10}
+                        pin={true}
+                        value={eOccurences}
+                        onIonChange={(e) =>
+                          setEOccurences(e.detail.value as number)
+                        }
+                      />{" "}
+                      Choisissez le caractère de substitution:
+                    </h2>
+                  </IonLabel>
+                </IonCardHeader>
+                <IonCardContent>
+                  <IonButtons>
+                    <IonFabButton color="instagram" onClick={() => replaceWithEuro()}>
+                      <IonIcon slot="icon-only" color="warning" />
+                      <IonLabel>€</IonLabel>
+                    </IonFabButton>
+                    <IonButton onClick={() => toggleFavorite()}>
+                      <IonIcon
+                        slot="icon-only"
+                        icon={arrowForwardCircleOutline}
+                      ></IonIcon>
+                    </IonButton>
+                    <IonButton onClick={() => replaceWithEuro()}>
+                      <IonIcon slot="icon-only" icon={logoEuro}></IonIcon>
+                    </IonButton>
+                  </IonButtons>
+                </IonCardContent>
+              </IonCard>
             </IonCol>
-
           </IonRow>
+        </IonGrid>
+
+        <IonRow>
+          <IonCol></IonCol>
+          <IonCol></IonCol>
+          <IonCol>
+            <IonButton type="submit" expand="block">
+              Copier
+            </IonButton>
+          </IonCol>
+        </IonRow>
 
         <IonLabel>
           <p>Version Alpha 1.0.20210330</p>
