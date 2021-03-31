@@ -51,9 +51,9 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
   const [showToast, setShowToast] = useState(false);
   const [eSelected, setESelected] = useState<string>("3");
 
-  const [eOccurences, setEOccurences] = useState(10);
-  const [aOccurences, setAOccurences] = useState(10);
-  const [spaceOccurences, setSpaceOccurences] = useState(10);
+  const [eOccurences, setEOccurences] = useState(12);
+  const [aOccurences, setAOccurences] = useState(12);
+  const [spaceOccurences, setSpaceOccurences] = useState(12);
 
   const textReplace: string = "Remplacer la lettre ";
   const textOccurences: string = " Nombre d'occurences :";
@@ -139,6 +139,7 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
                           numbers: true,
                           lowercase: true,
                           uppercase: true,
+                          symbols: true,
                           excludeSimilarCharacters: true,
                           strict: true,
                         })}
@@ -149,6 +150,8 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
                       <IonInput
                         onIonChange={(e) => handleChangePwd(e.detail.value!)} //{handleChangePwd}
                         name="password"
+                        placeholder="Mettre une couleur de fond"
+                        id="mdp-input"
                         value={password}
                         required
                       ></IonInput>{" "}
@@ -208,7 +211,7 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
                       {`${textOccurences}`}
                       <IonRange
                         min={0}
-                        max={10}
+                        max={12}
                         pin={true}
                         value={eOccurences}
                         onIonChange={(e) =>
@@ -234,7 +237,7 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
                     >
                       <IonRow>
                         <IonCol>
-                          {eSelected == "3" ? (
+                          {eSelected === "3" ? (
                             <IonItem>
                               <IonFabButton
                                 color="primary"
@@ -310,8 +313,6 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
                         </IonFabButton>
                       </IonItem>
                     </IonRadioGroup>
-
-
                   </IonButtons>
                 </IonCardContent>
               </IonCard>
@@ -327,7 +328,7 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
                       <br /> {`${textOccurences}`}
                       <IonRange
                         min={0}
-                        max={10}
+                        max={12}
                         pin={true}
                         value={aOccurences}
                         onIonChange={(e) =>
@@ -358,11 +359,12 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
                 <IonCardHeader>
                   <IonLabel>
                     <h2>
-                      Remplacer les espaces
+                    Que voulez-vous faire des espaces?
+                    <IonButton>Les supprimer</IonButton>
                       <br /> {`${textOccurences}`}
                       <IonRange
                         min={0}
-                        max={10}
+                        max={12}
                         pin={true}
                         value={spaceOccurences}
                         onIonChange={(e) =>
