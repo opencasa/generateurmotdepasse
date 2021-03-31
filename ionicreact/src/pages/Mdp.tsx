@@ -151,7 +151,7 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
                         onIonChange={(e) => handleChangePwd(e.detail.value!)} //{handleChangePwd}
                         name="password"
                         placeholder="Mettre une couleur de fond"
-                        id="mdp-input"
+                        class="mdp-input"
                         value={password}
                         required
                       ></IonInput>{" "}

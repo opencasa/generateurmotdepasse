@@ -1,21 +1,10 @@
 #mdp-page {
-  /*.mdp-logo {
-    padding: 20px 0;
-    min-height: 200px;
-    text-align: center;
-  }
 
-  .mdp-logo img {
-    max-width: 150px;
-  }*/
-
-  .mdp-input ion-input{
-    --background: #F00;
-    background-color: rgb(236, 192, 72);
-    }
 
   .list {
     margin-bottom: 0;
   }
-
+  .mdp-input {
+    --background: rgb(255, 147, 85);
+   }
 }
