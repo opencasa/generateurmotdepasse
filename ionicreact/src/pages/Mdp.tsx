@@ -21,9 +21,12 @@ import {
   IonInput,
   IonRange,
   IonFabButton,
+  IonRadioGroup,
+  IonRadio,
+  IonToast,
   IonText,
 } from "@ionic/react";
-import { sunny, moon } from "ionicons/icons";
+import { sunny, moon, clipboard } from "ionicons/icons";
 
 import "./Mdp.scss";
 import { connect } from "../data/connect";
@@ -45,21 +48,26 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
   const [tooShortError, setTooShortError] = useState(false);
+  const [showToast, setShowToast] = useState(false);
+  const [eSelected, setESelected] = useState<string>("3");
 
-  const [eOccurences, setEOccurences] = useState(0);
-  const [aOccurences, setAOccurences] = useState(0);
+  const [eOccurences, setEOccurences] = useState(10);
+  const [aOccurences, setAOccurences] = useState(10);
+  const [spaceOccurences, setSpaceOccurences] = useState(10);
 
   const textReplace: string = "Remplacer la lettre ";
   const textOccurences: string = " Nombre d'occurences :";
   const textSubstition: string = "Choisissez le caractère de substitution :";
-
   const replaceChars = () => {
     let source: string = password.toLocaleLowerCase();
     for (let i = 0; i < eOccurences; i++) {
-      source = source.replace("e", "€");
+      source = source.replace("e", eSelected);
     }
     for (let i = 0; i < aOccurences; i++) {
       source = source.replace("a", "@");
+    }
+    for (let i = 0; i < spaceOccurences; i++) {
+      source = source.replace(" ", "-");
     }
 
     console.log(`replaceWithEuro e source ${source} `);
@@ -94,6 +102,11 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
       }*/
     }
   };
+  const copyToClipboard = async () => {
+    navigator.clipboard.writeText(newPassword);
+    setShowToast(true);
+  };
+
   return (
     <IonPage id="mdp-page">
       <IonHeader>
@@ -114,7 +127,7 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
       <IonContent>
         <IonGrid fixed>
           <IonRow>
-            <IonCol size="12">
+            <IonCol>
               <form noValidate onSubmit={mdp}>
                 <IonList>
                   <IonItem>
@@ -144,6 +157,12 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
                         name="newPassword"
                         value={newPassword}
                       ></IonInput>
+                      <IonButton
+                        color="success"
+                        onClick={() => copyToClipboard()}
+                      >
+                        <IonIcon color="light" icon={clipboard}></IonIcon>
+                      </IonButton>
                     </div>
                   </IonItem>
 
@@ -168,10 +187,18 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
           </IonRow>
         </IonGrid>
 
+        <IonToast
+          isOpen={showToast}
+          onDidDismiss={() => setShowToast(false)}
+          message="Mot de passe copié dans le presse-papiers."
+          color="success"
+          duration={300}
+        />
+
         <IonGrid fixed>
           <IonRow>
             {/* e */}
-            <IonCol size="4">
+            <IonCol size-sm="6">
               <IonCard className="category-card">
                 <IonCardHeader>
                   <IonLabel>
@@ -194,34 +221,104 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
                 </IonCardHeader>
                 <IonCardContent>
                   <IonButtons>
-                    <IonFabButton
-                      color="instagram"
-                      onClick={() => replaceChars()}
+                    {/* <IonButton onClick={() => toggleFavorite()}>
+              {isFavorite ?
+                <IonIcon slot="icon-only" icon={star}></IonIcon> :
+                <IonIcon slot="icon-only" icon={starOutline}></IonIcon>
+              }
+            </IonButton> */}
+
+                    <IonRadioGroup
+                      value={eSelected}
+                      onIonChange={(e) => setESelected(e.detail.value)}
                     >
-                      <IonIcon slot="icon-only" color="warning" />
-                      <IonLabel>€</IonLabel>
-                    </IonFabButton>
-                    <IonFabButton
-                      color="primary"
-                      onClick={() => replaceChars()}
+                      <IonRow>
+                        <IonCol>
+                          {eSelected == "3" ? (
+                            <IonItem>
+                              <IonFabButton
+                                color="primary"
+                                onClick={() => replaceChars()}
+                              >
+                                <IonIcon color="warning" />
+                                <IonLabel>3</IonLabel>
+                                <IonRadio item-left value="3" />
+                              </IonFabButton>
+                            </IonItem>
+                          ) : (
+                            <IonItem onClick={() => replaceChars()}>
+                              <IonLabel>3&nbsp;</IonLabel>
+                              <IonRadio
+                                mode="md"
+                                item-left
+                                value="3"
+                              ></IonRadio>
+                            </IonItem>
+                          )}
+                        </IonCol>
+
+                        <IonCol>
+                          <IonItem>
+                            <IonLabel>€&nbsp;</IonLabel>
+                            <IonRadio mode="md" item-left value="€"></IonRadio>
+                          </IonItem>
+                        </IonCol>
+
+                        <IonCol>
+                          <IonItem>
+                            <IonLabel>é&nbsp;</IonLabel>
+                            <IonRadio mode="md" item-left value="é"></IonRadio>
+                          </IonItem>
+                        </IonCol>
+                      </IonRow>
+                    </IonRadioGroup>
+
+                    <IonRadioGroup
+                      value={eSelected}
+                      onIonChange={(e) => setESelected(e.detail.value)}
                     >
-                      <IonIcon slot="icon-only" color="warning" />
-                      <IonLabel>3</IonLabel>
-                    </IonFabButton>
-                    <IonFabButton
-                      color="secondary"
-                      onClick={() => replaceChars()}
-                    >
-                      <IonIcon slot="icon-only" color="information" />
-                      <IonLabel>é</IonLabel>
-                    </IonFabButton>
+                      <IonItem>
+                        <IonFabButton
+                          color="primary"
+                          onClick={() => replaceChars()}
+                        >
+                          <IonIcon color="warning" />
+                          <IonLabel>3</IonLabel>
+                          <IonRadio item-left value="3" />
+                        </IonFabButton>
+                      </IonItem>
+
+                      <IonItem item-left>
+                        <IonFabButton
+                          color="instagram"
+                          onClick={() => replaceChars()}
+                        >
+                          <IonIcon slot="icon-only" color="warning" />
+                          <IonLabel>€</IonLabel>
+                          <IonRadio item-left value="€" />
+                        </IonFabButton>
+                      </IonItem>
+
+                      <IonItem>
+                        <IonFabButton
+                          color="secondary"
+                          onClick={() => replaceChars()}
+                        >
+                          <IonIcon slot="icon-only" color="warning" />
+                          <IonLabel>é</IonLabel>
+                          <IonRadio item-left value="é" />
+                        </IonFabButton>
+                      </IonItem>
+                    </IonRadioGroup>
+
+
                   </IonButtons>
                 </IonCardContent>
               </IonCard>
             </IonCol>
 
             {/* a */}
-            <IonCol size="4">
+            <IonCol size-sm="4">
               <IonCard className="category-card">
                 <IonCardHeader>
                   <IonLabel>
@@ -254,21 +351,46 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
                 </IonCardContent>
               </IonCard>
             </IonCol>
+
+            {/* space */}
+            <IonCol>
+              <IonCard className="category-card">
+                <IonCardHeader>
+                  <IonLabel>
+                    <h2>
+                      Remplacer les espaces
+                      <br /> {`${textOccurences}`}
+                      <IonRange
+                        min={0}
+                        max={10}
+                        pin={true}
+                        value={spaceOccurences}
+                        onIonChange={(e) =>
+                          setSpaceOccurences(e.detail.value as number)
+                        }
+                      />
+                      {`${textSubstition}`}
+                    </h2>
+                  </IonLabel>
+                </IonCardHeader>
+                <IonCardContent>
+                  <IonButtons>
+                    <IonFabButton
+                      color="instagram"
+                      onClick={() => replaceChars()}
+                    >
+                      <IonIcon slot="icon-only" color="warning" />
+                      <IonLabel>-</IonLabel>
+                    </IonFabButton>
+                  </IonButtons>
+                </IonCardContent>
+              </IonCard>
+            </IonCol>
           </IonRow>
         </IonGrid>
 
-        {/* <IonRow>
-          <IonCol></IonCol>
-          <IonCol></IonCol>
-          <IonCol>
-            <IonButton type="submit" expand="block">
-              Copier
-            </IonButton>
-          </IonCol>
-        </IonRow> */}
-
         <IonLabel>
-          <p>Version Alpha 1.0.20210330</p>
+          <p>Version Alpha 1.0.20210331</p>
         </IonLabel>
       </IonContent>
     </IonPage>
