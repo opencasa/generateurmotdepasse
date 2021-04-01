@@ -65,9 +65,8 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
   );
   const [password, setPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
-  const [formSubmitted, setFormSubmitted] = useState(false);
-  const [passwordError, setPasswordError] = useState(false);
-  const [tooShortError, setTooShortError] = useState(false);
+  const [tooFewCharsetsError, setTooFewCharsetsError] = useState(true);
+  const [tooShortError, setTooShortError] = useState(true);
   const [showToast, setShowToast] = useState(false);
   const [eSelected, setESelected] = useState<string>("3");
   const [aSelected, setASelected] = useState<string>("@");
@@ -84,7 +83,7 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
   useEffect(() => {
     //Replace characters
     const replaceChars = () => {
-      let source: string = password.toLocaleLowerCase();
+      let source: string = password;//.toLocaleLowerCase();
       for (let i = 0; i < source.length; i++) {
         source = source.replace("e", eSelected);
         source = source.replace("a", aSelected);
@@ -94,10 +93,22 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
           source = source.replace(" ", spaceSelected);
         }
       }
-      if (source.length === 0) {
-        setPasswordError(true);
-      }
+
       setTooShortError(source.length < 12);
+
+      const strongRegex = new RegExp(
+        "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{12,})"
+      );
+      /*const mediumRegex = new RegExp(
+        "^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{12,})"
+      );*/
+      if (strongRegex.test(source)) {
+        console.log(`replaceChars strongRegex ${source} `);
+        setTooFewCharsetsError(false);
+      } else {
+        console.log(`replaceChars ok ${source} `);
+        setTooFewCharsetsError(true);
+      }
 
       //console.log(`replaceChars source ${source} `);
       setNewPassword(source);
@@ -114,15 +125,8 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
   const changeSpaceSelected = (e: string) => {
     setSpaceSelected(e);
   };
-  const submit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log(`submit ${password}`);
-    setFormSubmitted(true);
-  };
   const handleChangePwd = (e: string) => {
     setPassword(e);
-    //console.log(`handleChangePwd ${password} ${e}`);
-    //replaceChars();
   };
   const copyToClipboard = () => {
     navigator.clipboard.writeText(newPassword);
@@ -173,32 +177,41 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
           </IonRow>
           <IonRow>
             <IonCol>
-              <form noValidate onSubmit={submit}>
+              <form noValidate>
+                {" "}
+
                 <IonInput
+                  className={
+                    tooShortError
+                      ? "mdp-input-tooshort"
+                      : tooFewCharsetsError
+                      ? "mdp-input-toofewcharsets"
+                      : "mdp-input-valid"
+                  }
+                  color={tooShortError && tooFewCharsetsError ? "warning" : "success"}
                   onIonChange={(e) => handleChangePwd(e.detail.value!)}
                   name="password"
                   value={password}
                   ref={(ref) => (inputRef.current = ref)}
                   required
                 ></IonInput>{" "}
-                {tooShortError && (
-                  <IonText color="warning">
-                    <p className="ion-padding-start">
-                      Trop court (12 caractères minimum)
-                    </p>
-                  </IonText>
-                )}
-                {formSubmitted && passwordError && (
-                  <IonText color="danger">
-                    <p className="ion-padding-start">Texte requis</p>
-                  </IonText>
-                )}
               </form>
             </IonCol>
             <IonCol>
-              <IonButton color="success" type="submit">
-                <IonIcon color="light" icon={checkmarkCircle}></IonIcon>
-              </IonButton>
+              <p className="ion-padding-start">
+                {tooFewCharsetsError && (
+                  <IonText color="danger">* 4 jeux de caractères requis (minuscules, majuscules, chiffres, symboles).&nbsp;</IonText>
+                )}
+                {tooShortError ? (
+                  <IonText color="warning">
+                    * Trop court (12 caractères minimum).&nbsp;
+                  </IonText>
+                ) : (
+                  <IonButton color="success" type="submit">
+                    <IonIcon color="light" icon={checkmarkCircle}></IonIcon>
+                  </IonButton>
+                )}
+              </p>
             </IonCol>
           </IonRow>
           <IonRow>
@@ -211,6 +224,9 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
           <IonRow>
             <IonCol>
               <IonInput
+                className={
+                  tooShortError ? "mdp-input-invalid" : "mdp-input-valid"
+                }
                 name="newPassword"
                 readonly
                 value={newPassword}
@@ -412,7 +428,7 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
                   )}
                   <IonLabel>
                     <h2>
-                      <br /> Supprimer les espaces &nbsp;
+                      Supprimer les espaces &nbsp;
                       <IonToggle
                         checked={deleteSpaces}
                         onIonChange={(e) => setDeleteSpaces(e.detail.checked)}

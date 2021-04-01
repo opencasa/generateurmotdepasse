@@ -1,20 +1,26 @@
 #mdp-page {
-  ion-col{
+
     ion-input{
        border: solid 1px red;
     }
- }
 
- ion-row{
+
+ /*ion-row{
     ion-textarea{
        border: solid 1px red;
     }
- }
+ }*/
 
-  .list {
-    margin-bottom: 0;
-  }
-  .mdp-input {
-    --background: rgb(251, 230, 230);
+  .mdp-input-valid {
+    border: solid 1px rgb(4, 214, 57);
+    //--background: rgb(251, 230, 230);
+   }
+   .mdp-input-tooshort {
+    border: solid 1px rgb(251, 247, 0);
+    //--background: rgb(251, 230, 230);
+   }
+   .mdp-input-toofewcharsets {
+    border: solid 1px rgb(251, 92, 0);
+    //--background: rgb(251, 230, 230);
    }
 }
