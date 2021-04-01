@@ -25,7 +25,13 @@ import {
   IonToast,
   IonText,
 } from "@ionic/react";
-import { sunny, moon, clipboard, refresh, checkmarkCircle } from "ionicons/icons";
+import {
+  sunny,
+  moon,
+  clipboard,
+  refresh,
+  checkmarkCircle,
+} from "ionicons/icons";
 
 import "./Mdp.scss";
 import { connect } from "../data/connect";
@@ -41,7 +47,24 @@ interface DispatchProps {
 
 interface MdpProps extends StateProps, DispatchProps {}
 
+const generatePassword = () => {
+  return generateur.generate({
+    length: 12,
+    numbers: true,
+    lowercase: true,
+    uppercase: true,
+    symbols: true,
+    excludeSimilarCharacters: true,
+    strict: true,
+  });
+};
+
 const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
+  const textReplace: string = "Remplacer la lettre ";
+  const textSubstition: string = "Choisissez le caractère de substitution :";
+  const [generatedPassword, setGeneratedPassword] = useState(
+    generatePassword()
+  );
   const [password, setPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [formSubmitted, setFormSubmitted] = useState(false);
@@ -49,35 +72,45 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
   const [tooShortError, setTooShortError] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [eSelected, setESelected] = useState<string>("3");
+  const [aSelected, setASelected] = useState<string>("@");
+  const [spaceSelected, setSpaceSelected] = useState<string>("-");
 
-  const [eOccurences, setEOccurences] = useState(12);
-  const [aOccurences, setAOccurences] = useState(12);
-  const [spaceOccurences, setSpaceOccurences] = useState(12);
+  const [deleteSpaces, setDeleteSpaces] = useState(false);
 
-  const textReplace: string = "Remplacer la lettre ";
-  const textOccurences: string = " Nombre d'occurences :";
-  const textSubstition: string = "Choisissez le caractère de substitution :";
-
+  //Replace characters
   const replaceChars = () => {
     let source: string = password.toLocaleLowerCase();
-    for (let i = 0; i < eOccurences; i++) {
+    for (let i = 0; i < source.length; i++) {
       source = source.replace("e", eSelected);
-    }
-    for (let i = 0; i < aOccurences; i++) {
-      source = source.replace("a", "@");
-    }
-    for (let i = 0; i < spaceOccurences; i++) {
-      source = source.replace(" ", "-");
+      source = source.replace("a", aSelected);
+      if (deleteSpaces) {
+        source = source.replace(" ", "");
+      } else {
+        source = source.replace(" ", spaceSelected);
+      }
     }
     if (source.length === 0) {
       setPasswordError(true);
     }
     setTooShortError(source.length < 12);
 
-    console.log(`replaceWithEuro e source ${source} `);
+    console.log(`replaceChars source ${source} `);
     setNewPassword(source);
   };
-
+  const changeESelected = async (e: string) => {
+    console.log(`changeESelected ${e} `);
+    await setESelected(e);
+    console.log(`changeESelected ${e} `);
+    replaceChars();
+  };
+  const changeASelected = async (e: string) => {
+    await setASelected(e);
+    replaceChars();
+  };
+  const changeSpaceSelected = async (e: string) => {
+    await setSpaceSelected(e);
+    replaceChars();
+  };
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log(`submit ${password}`);
@@ -114,28 +147,18 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
         <IonGrid fixed>
           <IonRow>
             <IonCol>
-              {/* <IonList>
-                  <IonItem>
-                <div className="container"> */}
               <strong>Mot de passe aléatoire proposé:</strong>
             </IonCol>
           </IonRow>
           <IonRow>
             <IonCol>
-              <p>
-                {generateur.generate({
-                  length: 12,
-                  numbers: true,
-                  lowercase: true,
-                  uppercase: true,
-                  symbols: true,
-                  excludeSimilarCharacters: true,
-                  strict: true,
-                })}
-              </p>
+              <p>{generatedPassword}</p>
             </IonCol>
             <IonCol>
-              <IonButton color="success" >
+              <IonButton
+                color="warning"
+                onClick={() => setGeneratedPassword(generatePassword())}
+              >
                 <IonIcon color="light" icon={refresh}></IonIcon>
               </IonButton>
             </IonCol>
@@ -157,7 +180,7 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
               </form>
             </IonCol>
             <IonCol>
-              <IonButton  color="success" type="submit" >
+              <IonButton color="success" type="submit">
                 <IonIcon color="light" icon={checkmarkCircle}></IonIcon>
               </IonButton>
             </IonCol>
@@ -181,8 +204,6 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
               <IonButton color="success" onClick={() => copyToClipboard()}>
                 <IonIcon color="light" icon={clipboard}></IonIcon>
               </IonButton>
-              {/* </div>
-                  </IonItem> */}
 
               {tooShortError && (
                 <IonText color="warning">
@@ -196,7 +217,6 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
                   <p className="ion-padding-start">Texte requis</p>
                 </IonText>
               )}
-              {/* </IonList> */}
             </IonCol>
           </IonRow>
         </IonGrid>
@@ -216,59 +236,24 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
               <IonCard className="category-card">
                 <IonCardHeader>
                   <IonLabel>
-                    <h2>
-                      {`${textReplace}`} "e"
-                      <br />
-                      {`${textOccurences}`}
-                      <IonRange
-                        min={0}
-                        max={12}
-                        pin={true}
-                        value={eOccurences}
-                        onIonChange={(e) =>
-                          setEOccurences(e.detail.value as number)
-                        }
-                      />
-                      {`${textSubstition}`}
-                    </h2>
+                    <h2>{`${textReplace}`} "e"</h2>
                   </IonLabel>
                 </IonCardHeader>
                 <IonCardContent>
+                  <IonLabel>
+                    <h2>{`${textSubstition}`}</h2>
+                  </IonLabel>
                   <IonButtons>
-                    {/* <IonButton onClick={() => toggleFavorite()}>
-              {isFavorite ?
-                <IonIcon slot="icon-only" icon={star}></IonIcon> :
-                <IonIcon slot="icon-only" icon={starOutline}></IonIcon>
-              }
-            </IonButton> */}
-
                     <IonRadioGroup
                       value={eSelected}
-                      onIonChange={(e) => setESelected(e.detail.value)}
+                      onIonChange={(e) => changeESelected(e.detail.value)}
                     >
                       <IonRow>
                         <IonCol>
-                          {eSelected === "3" ? (
-                            <IonItem>
-                              <IonFabButton
-                                color="primary"
-                                onClick={() => replaceChars()}
-                              >
-                                <IonIcon color="warning" />
-                                <IonLabel>3</IonLabel>
-                                <IonRadio item-left value="3" />
-                              </IonFabButton>
-                            </IonItem>
-                          ) : (
-                            <IonItem onClick={() => replaceChars()}>
-                              <IonLabel>3&nbsp;</IonLabel>
-                              <IonRadio
-                                mode="md"
-                                item-left
-                                value="3"
-                              ></IonRadio>
-                            </IonItem>
-                          )}
+                          <IonItem>
+                            <IonLabel>3&nbsp;</IonLabel>
+                            <IonRadio mode="md" item-left value="3"></IonRadio>
+                          </IonItem>
                         </IonCol>
 
                         <IonCol>
@@ -286,44 +271,6 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
                         </IonCol>
                       </IonRow>
                     </IonRadioGroup>
-
-                    <IonRadioGroup
-                      value={eSelected}
-                      onIonChange={(e) => setESelected(e.detail.value)}
-                    >
-                      <IonItem>
-                        <IonFabButton
-                          color="primary"
-                          onClick={() => replaceChars()}
-                        >
-                          <IonIcon color="warning" />
-                          <IonLabel>3</IonLabel>
-                          <IonRadio item-left value="3" />
-                        </IonFabButton>
-                      </IonItem>
-
-                      <IonItem item-left>
-                        <IonFabButton
-                          color="instagram"
-                          onClick={() => replaceChars()}
-                        >
-                          <IonIcon slot="icon-only" color="warning" />
-                          <IonLabel>€</IonLabel>
-                          <IonRadio item-left value="€" />
-                        </IonFabButton>
-                      </IonItem>
-
-                      <IonItem>
-                        <IonFabButton
-                          color="secondary"
-                          onClick={() => replaceChars()}
-                        >
-                          <IonIcon slot="icon-only" color="warning" />
-                          <IonLabel>é</IonLabel>
-                          <IonRadio item-left value="é" />
-                        </IonFabButton>
-                      </IonItem>
-                    </IonRadioGroup>
                   </IonButtons>
                 </IonCardContent>
               </IonCard>
@@ -334,31 +281,34 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
               <IonCard className="category-card">
                 <IonCardHeader>
                   <IonLabel>
-                    <h2>
-                      {`${textReplace}`} "a"
-                      <br /> {`${textOccurences}`}
-                      <IonRange
-                        min={0}
-                        max={12}
-                        pin={true}
-                        value={aOccurences}
-                        onIonChange={(e) =>
-                          setAOccurences(e.detail.value as number)
-                        }
-                      />
-                      {`${textSubstition}`}
-                    </h2>
+                    <h2>{`${textReplace}`} "a"</h2>
                   </IonLabel>
                 </IonCardHeader>
                 <IonCardContent>
+                  <IonLabel>
+                    <h2>{`${textSubstition}`}</h2>
+                  </IonLabel>
                   <IonButtons>
-                    <IonFabButton
-                      color="instagram"
-                      onClick={() => replaceChars()}
+                    <IonRadioGroup
+                      value={aSelected}
+                      onIonChange={(e) => changeASelected(e.detail.value)}
                     >
-                      <IonIcon slot="icon-only" color="warning" />
-                      <IonLabel>@</IonLabel>
-                    </IonFabButton>
+                      <IonRow>
+                        <IonCol>
+                          <IonItem>
+                            <IonLabel>@&nbsp;</IonLabel>
+                            <IonRadio mode="md" item-left value="@"></IonRadio>
+                          </IonItem>
+                        </IonCol>
+
+                        <IonCol>
+                          <IonItem>
+                            <IonLabel>à&nbsp;</IonLabel>
+                            <IonRadio mode="md" item-left value="à"></IonRadio>
+                          </IonItem>
+                        </IonCol>
+                      </IonRow>
+                    </IonRadioGroup>
                   </IonButtons>
                 </IonCardContent>
               </IonCard>
@@ -369,33 +319,56 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
               <IonCard className="category-card">
                 <IonCardHeader>
                   <IonLabel>
-                    <h2>
-                      Que voulez-vous faire des espaces?
-                      <IonButton>Les supprimer</IonButton>
-                      <br /> {`${textOccurences}`}
-                      <IonRange
-                        min={0}
-                        max={12}
-                        pin={true}
-                        value={spaceOccurences}
-                        onIonChange={(e) =>
-                          setSpaceOccurences(e.detail.value as number)
-                        }
-                      />
-                      {`${textSubstition}`}
-                    </h2>
+                  <h2>Remplacer les espaces</h2>
                   </IonLabel>
                 </IonCardHeader>
                 <IonCardContent>
+                  {deleteSpaces ? null : (
+                    <><IonLabel>
+                    <h2>{`${textSubstition}`}</h2>
+                  </IonLabel>
                   <IonButtons>
-                    <IonFabButton
-                      color="instagram"
-                      onClick={() => replaceChars()}
-                    >
-                      <IonIcon slot="icon-only" color="warning" />
-                      <IonLabel>-</IonLabel>
-                    </IonFabButton>
-                  </IonButtons>
+
+                      <IonRadioGroup
+                        value={spaceSelected}
+                        onIonChange={(e) => changeSpaceSelected(e.detail.value)}
+                      >
+                        <IonRow>
+                          <IonCol>
+                            <IonItem>
+                              <IonLabel>-&nbsp;</IonLabel>
+                              <IonRadio
+                                mode="md"
+                                item-left
+                                value="-"
+                              ></IonRadio>
+                            </IonItem>
+                          </IonCol>
+
+                          <IonCol>
+                            <IonItem>
+                              <IonLabel>_&nbsp;</IonLabel>
+                              <IonRadio
+                                mode="md"
+                                item-left
+                                value="_"
+                              ></IonRadio>
+                            </IonItem>
+                          </IonCol>
+                        </IonRow>
+                      </IonRadioGroup>
+                    </IonButtons></>
+                  )}
+                  <IonLabel>
+                    <h2>
+
+                      <br /> Supprimer les espaces &nbsp;
+                      <IonToggle
+                        checked={deleteSpaces}
+                        onIonChange={(e) => setDeleteSpaces(e.detail.checked)}
+                      />
+                    </h2>
+                  </IonLabel>
                 </IonCardContent>
               </IonCard>
             </IonCol>
