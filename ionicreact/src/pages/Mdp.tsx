@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   IonToggle,
   IonIcon,
@@ -75,51 +75,56 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
 
   const [deleteSpaces, setDeleteSpaces] = useState(false);
 
-  //Replace characters
-  const replaceChars = () => {
-    let source: string = password.toLocaleLowerCase();
-    for (let i = 0; i < source.length; i++) {
-      source = source.replace("e", eSelected);
-      source = source.replace("a", aSelected);
-      if (deleteSpaces) {
-        source = source.replace(" ", "");
-      } else {
-        source = source.replace(" ", spaceSelected);
-      }
-    }
-    if (source.length === 0) {
-      setPasswordError(true);
-    }
-    setTooShortError(source.length < 12);
+  const inputRef = useRef<any>(null);
 
-    console.log(`replaceChars source ${source} `);
-    setNewPassword(source);
-  };
-  const changeESelected = async (e: string) => {
-    console.log(`changeESelected ${e} `);
-    await setESelected(e);
-    console.log(`changeESelected ${e} `);
+  useEffect(() => {
+    setTimeout(() => inputRef.current.setFocus(), 1000);
+  });
+
+  useEffect(() => {
+    //Replace characters
+    const replaceChars = () => {
+      let source: string = password.toLocaleLowerCase();
+      for (let i = 0; i < source.length; i++) {
+        source = source.replace("e", eSelected);
+        source = source.replace("a", aSelected);
+        if (deleteSpaces) {
+          source = source.replace(" ", "");
+        } else {
+          source = source.replace(" ", spaceSelected);
+        }
+      }
+      if (source.length === 0) {
+        setPasswordError(true);
+      }
+      setTooShortError(source.length < 12);
+
+      //console.log(`replaceChars source ${source} `);
+      setNewPassword(source);
+    };
     replaceChars();
+  }, [password, eSelected, aSelected, spaceSelected, deleteSpaces]);
+
+  const changeESelected = (e: string) => {
+    setESelected(e);
   };
-  const changeASelected = async (e: string) => {
-    await setASelected(e);
-    replaceChars();
+  const changeASelected = (e: string) => {
+    setASelected(e);
   };
-  const changeSpaceSelected = async (e: string) => {
-    await setSpaceSelected(e);
-    replaceChars();
+  const changeSpaceSelected = (e: string) => {
+    setSpaceSelected(e);
   };
-  const submit = async (e: React.FormEvent) => {
+  const submit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log(`submit ${password}`);
     setFormSubmitted(true);
   };
-  const handleChangePwd = async (e: string) => {
-    await setPassword(e);
-    console.log(`handleChangePwd ${password} ${e}`);
-    replaceChars();
+  const handleChangePwd = (e: string) => {
+    setPassword(e);
+    //console.log(`handleChangePwd ${password} ${e}`);
+    //replaceChars();
   };
-  const copyToClipboard = async () => {
+  const copyToClipboard = () => {
     navigator.clipboard.writeText(newPassword);
     setShowToast(true);
   };
@@ -170,11 +175,24 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
             <IonCol>
               <form noValidate onSubmit={submit}>
                 <IonInput
-                  onIonChange={(e) => handleChangePwd(e.detail.value!)} //class="mdp-input" color="light"
+                  onIonChange={(e) => handleChangePwd(e.detail.value!)}
                   name="password"
                   value={password}
+                  ref={(ref) => (inputRef.current = ref)}
                   required
                 ></IonInput>{" "}
+                {tooShortError && (
+                  <IonText color="warning">
+                    <p className="ion-padding-start">
+                      Trop court (12 caractères minimum)
+                    </p>
+                  </IonText>
+                )}
+                {formSubmitted && passwordError && (
+                  <IonText color="danger">
+                    <p className="ion-padding-start">Texte requis</p>
+                  </IonText>
+                )}
               </form>
             </IonCol>
             <IonCol>
@@ -202,19 +220,6 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
               <IonButton color="success" onClick={() => copyToClipboard()}>
                 <IonIcon color="light" icon={clipboard}></IonIcon>
               </IonButton>
-
-              {tooShortError && (
-                <IonText color="warning">
-                  <p className="ion-padding-start">
-                    Trop court (12 caractères minimum)
-                  </p>
-                </IonText>
-              )}
-              {formSubmitted && passwordError && (
-                <IonText color="danger">
-                  <p className="ion-padding-start">Texte requis</p>
-                </IonText>
-              )}
             </IonCol>
           </IonRow>
         </IonGrid>
@@ -298,7 +303,12 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
                             <IonRadio mode="md" item-left value="@"></IonRadio>
                           </IonItem>
                         </IonCol>
-
+                        <IonCol>
+                          <IonItem>
+                            <IonLabel>4&nbsp;</IonLabel>
+                            <IonRadio mode="md" item-left value="4"></IonRadio>
+                          </IonItem>
+                        </IonCol>
                         <IonCol>
                           <IonItem>
                             <IonLabel>à&nbsp;</IonLabel>
@@ -317,89 +327,91 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
               <IonCard className="category-card">
                 <IonCardHeader>
                   <IonLabel>
-                  <h2>Remplacer les espaces</h2>
+                    <h2>Remplacer les espaces</h2>
                   </IonLabel>
                 </IonCardHeader>
                 <IonCardContent>
                   {deleteSpaces ? null : (
-                    <><IonLabel>
-                    <h2>{`${textSubstition}`}</h2>
-                  </IonLabel>
-                  <IonButtons>
+                    <>
+                      <IonLabel>
+                        <h2>{`${textSubstition}`}</h2>
+                      </IonLabel>
+                      <IonButtons>
+                        <IonRadioGroup
+                          value={spaceSelected}
+                          onIonChange={(e) =>
+                            changeSpaceSelected(e.detail.value)
+                          }
+                        >
+                          <IonRow>
+                            <IonCol>
+                              <IonItem>
+                                <IonLabel>-&nbsp;</IonLabel>
+                                <IonRadio
+                                  mode="md"
+                                  item-left
+                                  value="-"
+                                ></IonRadio>
+                              </IonItem>
+                            </IonCol>
 
-                      <IonRadioGroup
-                        value={spaceSelected}
-                        onIonChange={(e) => changeSpaceSelected(e.detail.value)}
-                      >
-                        <IonRow>
-                          <IonCol>
-                            <IonItem>
-                              <IonLabel>-&nbsp;</IonLabel>
-                              <IonRadio
-                                mode="md"
-                                item-left
-                                value="-"
-                              ></IonRadio>
-                            </IonItem>
-                          </IonCol>
-
-                          <IonCol>
-                            <IonItem>
-                              <IonLabel>_&nbsp;</IonLabel>
-                              <IonRadio
-                                mode="md"
-                                item-left
-                                value="_"
-                              ></IonRadio>
-                            </IonItem>
-                          </IonCol>
-                          <IonCol>
-                            <IonItem>
-                              <IonLabel>.&nbsp;</IonLabel>
-                              <IonRadio
-                                mode="md"
-                                item-left
-                                value="."
-                              ></IonRadio>
-                            </IonItem>
-                          </IonCol>
-                          <IonCol>
-                            <IonItem>
-                              <IonLabel>+&nbsp;</IonLabel>
-                              <IonRadio
-                                mode="md"
-                                item-left
-                                value="+"
-                              ></IonRadio>
-                            </IonItem>
-                          </IonCol>
-                          <IonCol>
-                            <IonItem>
-                              <IonLabel>=&nbsp;</IonLabel>
-                              <IonRadio
-                                mode="md"
-                                item-left
-                                value="="
-                              ></IonRadio>
-                            </IonItem>
-                          </IonCol>
-                          <IonCol>
-                            <IonItem>
-                              <IonLabel>~&nbsp;</IonLabel>
-                              <IonRadio
-                                mode="md"
-                                item-left
-                                value="~"
-                              ></IonRadio>
-                            </IonItem>
-                          </IonCol>
-                        </IonRow>
-                      </IonRadioGroup>
-                    </IonButtons></>
+                            <IonCol>
+                              <IonItem>
+                                <IonLabel>_&nbsp;</IonLabel>
+                                <IonRadio
+                                  mode="md"
+                                  item-left
+                                  value="_"
+                                ></IonRadio>
+                              </IonItem>
+                            </IonCol>
+                            <IonCol>
+                              <IonItem>
+                                <IonLabel>.&nbsp;</IonLabel>
+                                <IonRadio
+                                  mode="md"
+                                  item-left
+                                  value="."
+                                ></IonRadio>
+                              </IonItem>
+                            </IonCol>
+                            <IonCol>
+                              <IonItem>
+                                <IonLabel>+&nbsp;</IonLabel>
+                                <IonRadio
+                                  mode="md"
+                                  item-left
+                                  value="+"
+                                ></IonRadio>
+                              </IonItem>
+                            </IonCol>
+                            <IonCol>
+                              <IonItem>
+                                <IonLabel>=&nbsp;</IonLabel>
+                                <IonRadio
+                                  mode="md"
+                                  item-left
+                                  value="="
+                                ></IonRadio>
+                              </IonItem>
+                            </IonCol>
+                            <IonCol>
+                              <IonItem>
+                                <IonLabel>~&nbsp;</IonLabel>
+                                <IonRadio
+                                  mode="md"
+                                  item-left
+                                  value="~"
+                                ></IonRadio>
+                              </IonItem>
+                            </IonCol>
+                          </IonRow>
+                        </IonRadioGroup>
+                      </IonButtons>
+                    </>
                   )}
                   <IonLabel>
                     <h2>
-
                       <br /> Supprimer les espaces &nbsp;
                       <IonToggle
                         checked={deleteSpaces}
