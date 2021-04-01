@@ -97,7 +97,7 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
       setTooShortError(source.length < 12);
 
       const strongRegex = new RegExp(
-        "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{12,})"
+        "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{4,})"
       );
       /*const mediumRegex = new RegExp(
         "^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{12,})"
@@ -106,7 +106,7 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
         console.log(`replaceChars strongRegex ${source} `);
         setTooFewCharsetsError(false);
       } else {
-        console.log(`replaceChars ok ${source} `);
+        console.log(`replaceChars too few charsets ${source} `);
         setTooFewCharsetsError(true);
       }
 
