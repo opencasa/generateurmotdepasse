@@ -1,10 +1,20 @@
 #mdp-page {
+  ion-col{
+    ion-input{
+       border: solid 1px red;
+    }
+ }
 
+ ion-row{
+    ion-textarea{
+       border: solid 1px red;
+    }
+ }
 
   .list {
     margin-bottom: 0;
   }
   .mdp-input {
-    --background: rgb(255, 147, 85);
+    --background: rgb(251, 230, 230);
    }
 }
