@@ -18,8 +18,6 @@ import {
   IonButton,
   IonItem,
   IonInput,
-  IonRange,
-  IonFabButton,
   IonRadioGroup,
   IonRadio,
   IonToast,
@@ -352,6 +350,46 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
                                 mode="md"
                                 item-left
                                 value="_"
+                              ></IonRadio>
+                            </IonItem>
+                          </IonCol>
+                          <IonCol>
+                            <IonItem>
+                              <IonLabel>.&nbsp;</IonLabel>
+                              <IonRadio
+                                mode="md"
+                                item-left
+                                value="."
+                              ></IonRadio>
+                            </IonItem>
+                          </IonCol>
+                          <IonCol>
+                            <IonItem>
+                              <IonLabel>+&nbsp;</IonLabel>
+                              <IonRadio
+                                mode="md"
+                                item-left
+                                value="+"
+                              ></IonRadio>
+                            </IonItem>
+                          </IonCol>
+                          <IonCol>
+                            <IonItem>
+                              <IonLabel>=&nbsp;</IonLabel>
+                              <IonRadio
+                                mode="md"
+                                item-left
+                                value="="
+                              ></IonRadio>
+                            </IonItem>
+                          </IonCol>
+                          <IonCol>
+                            <IonItem>
+                              <IonLabel>~&nbsp;</IonLabel>
+                              <IonRadio
+                                mode="md"
+                                item-left
+                                value="~"
                               ></IonRadio>
                             </IonItem>
                           </IonCol>
