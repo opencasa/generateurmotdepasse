@@ -28,15 +28,17 @@ import {
   moon,
   clipboard,
   refresh,
-  checkmarkCircle,
 } from "ionicons/icons";
 
 import "./Mdp.scss";
+import { Character } from '../models/Character';
 import { connect } from "../data/connect";
 import { setDarkMode } from "../data/user/user.actions";
 import generateur from "generate-password";
+import CharacterItem from '../components/CharacterItem';
 
 interface StateProps {
+  characters: Character[];
   darkMode: boolean;
 }
 interface DispatchProps {
@@ -57,7 +59,7 @@ const generatePassword = () => {
   });
 };
 
-const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
+const Mdp: React.FC<MdpProps> = ({ characters, darkMode, setDarkMode }) => {
   const textReplace: string = "Remplacer la lettre ";
   const textSubstition: string = "Choisissez le caractère de substitution :";
   const [generatedPassword, setGeneratedPassword] = useState(
@@ -198,21 +200,9 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
               </form>
             </IonCol>
             <IonCol>
-              <p className="ion-padding-start">
-                {tooFewCharsetsError && (
-                  <IonText color="danger">* 4 jeux de caractères requis (minuscules, majuscules, chiffres, symboles).&nbsp;</IonText>
-                )}
-                {tooShortError ? (
-                  <IonText color="warning">
-                    * Trop court (12 caractères minimum).&nbsp;
-                  </IonText>
-                ) : (
-                  !tooFewCharsetsError &&
-                  <IonButton color="success" type="submit">
-                    <IonIcon color="light" icon={checkmarkCircle}></IonIcon>
-                  </IonButton>
-                )}
-              </p>
+              {/* <p className="ion-padding-start"> */}
+
+              {/* </p> */}
             </IonCol>
           </IonRow>
           <IonRow>
@@ -234,9 +224,22 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
               ></IonInput>
             </IonCol>
             <IonCol>
-              <IonButton color="success" onClick={() => copyToClipboard()}>
+
+            {tooFewCharsetsError && (
+                  <IonText color="danger">* 4 jeux de caractères requis (minuscules, majuscules, chiffres, symboles).&nbsp;</IonText>
+                )}
+                {tooShortError ? (
+                  <IonText color="warning">
+                    <br/>* Trop court (12 caractères minimum).&nbsp;
+                  </IonText>
+                ) : (
+                  !tooFewCharsetsError &&
+                  <IonButton color="success" onClick={() => copyToClipboard()}>
                 <IonIcon color="light" icon={clipboard}></IonIcon>
               </IonButton>
+                )}
+
+
             </IonCol>
           </IonRow>
         </IonGrid>
@@ -251,6 +254,17 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
 
         <IonGrid>
           <IonRow>
+
+          {characters.map(character => (
+                <IonCol size="12" size-md="6" key={character.id}>
+                  <CharacterItem
+                    key={character.id}
+                    character={character}
+                  />
+                </IonCol>
+              ))}
+
+
             {/* e */}
             <IonCol>
               <IonCard className="category-card">
@@ -443,7 +457,7 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
         </IonGrid>
 
         <IonLabel>
-          <p>Version Alpha 1.0.20210402</p>
+          <p>Version 1.0.20210402</p>
         </IonLabel>
       </IonContent>
     </IonPage>
@@ -452,6 +466,7 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
 
 export default connect<{}, StateProps, DispatchProps>({
   mapStateToProps: (state) => ({
+    characters: state.data.characters,
     darkMode: state.user.darkMode,
   }),
   mapDispatchToProps: {

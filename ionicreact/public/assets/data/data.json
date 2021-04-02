@@ -1,0 +1,29 @@
+{
+  "characters": [
+    {
+      "name": "a",
+      "replacements": ["4","@","à"],
+      "id": "1"
+    },
+    {
+      "name": "e",
+      "replacements": ["3","€","é"],
+      "id": "2"
+    },
+    {
+      "name": "i",
+      "replacements": ["1","!","|"],
+      "id": "3"
+    },
+    {
+      "name": "o",
+      "replacements": ["0","#"],
+      "id": "4"
+    },
+    {
+      "name": "espaces",
+      "replacements": ["-","_",".","+","-","~"],
+      "id": "5"
+    }
+  ]
+}
