@@ -207,6 +207,7 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
                     * Trop court (12 caractères minimum).&nbsp;
                   </IonText>
                 ) : (
+                  !tooFewCharsetsError &&
                   <IonButton color="success" type="submit">
                     <IonIcon color="light" icon={checkmarkCircle}></IonIcon>
                   </IonButton>
@@ -442,7 +443,7 @@ const Mdp: React.FC<MdpProps> = ({ darkMode, setDarkMode }) => {
         </IonGrid>
 
         <IonLabel>
-          <p>Version Alpha 1.0.20210401</p>
+          <p>Version Alpha 1.0.20210402</p>
         </IonLabel>
       </IonContent>
     </IonPage>
