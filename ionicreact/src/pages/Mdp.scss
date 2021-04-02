@@ -1,26 +1,26 @@
 #mdp-page {
+  ion-input {
+    border: solid 1px red;
+  }
 
-    ion-input{
-       border: solid 1px red;
-    }
-
-
- /*ion-row{
-    ion-textarea{
-       border: solid 1px red;
-    }
- }*/
-
+  .mdp-input {
+    border: solid 2px rgb(143, 143, 143);
+    //--background: rgb(251, 230, 230);
+  }
   .mdp-input-valid {
     border: solid 1px rgb(4, 214, 57);
     //--background: rgb(251, 230, 230);
-   }
-   .mdp-input-tooshort {
-    border: solid 1px rgb(251, 247, 0);
+  }
+  .mdp-input-invalid {
+    border: solid 1px rgb(219, 152, 18);
     //--background: rgb(251, 230, 230);
-   }
-   .mdp-input-toofewcharsets {
-    border: solid 1px rgb(251, 92, 0);
+  }
+  .mdp-input-tooshort {
+    border: solid 1px rgb(245, 244, 185);
     //--background: rgb(251, 230, 230);
-   }
+  }
+  .mdp-input-toofewcharsets {
+    border: solid 1px rgb(238, 175, 138);
+    //--background: rgb(251, 230, 230);
+  }
 }

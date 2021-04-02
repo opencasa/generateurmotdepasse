@@ -183,13 +183,7 @@ const Mdp: React.FC<MdpProps> = ({ characters, darkMode, setDarkMode }) => {
                 {" "}
 
                 <IonInput
-                  className={
-                    tooShortError
-                      ? "mdp-input-tooshort"
-                      : tooFewCharsetsError
-                      ? "mdp-input-toofewcharsets"
-                      : "mdp-input-valid"
-                  }
+                  className="mdp-input"
                   color={tooShortError && tooFewCharsetsError ? "warning" : "success"}
                   onIonChange={(e) => handleChangePwd(e.detail.value!)}
                   name="password"
@@ -216,7 +210,11 @@ const Mdp: React.FC<MdpProps> = ({ characters, darkMode, setDarkMode }) => {
             <IonCol>
               <IonInput
                 className={
-                  tooShortError ? "mdp-input-invalid" : "mdp-input-valid"
+                  tooShortError
+                    ? "mdp-input-tooshort"
+                    : tooFewCharsetsError
+                    ? "mdp-input-toofewcharsets"
+                    : "mdp-input-valid"
                 }
                 name="newPassword"
                 readonly
