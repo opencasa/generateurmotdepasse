@@ -1,6 +1,6 @@
 {
   "name": "generateurmotdepasse",
-  "version": "1.0.20210329",
+  "version": "1.0.20210406",
   "private": true,
   "scripts": {
     "start": "node ./bin/www"

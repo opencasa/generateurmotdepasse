@@ -1,6 +1,6 @@
 {
-  "short_name": "Ionic React Conf",
-  "name": "Ionic React Conf",
+  "short_name": "Générateur de mot de passe",
+  "name": "Générateur de mot de passe",
   "icons": [
     {
       "src": "assets/icon/favicon.png",

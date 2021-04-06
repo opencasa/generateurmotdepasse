@@ -24,6 +24,7 @@ import './theme/variables.css';
 import { connect } from './data/connect';
 import { AppContextProvider } from './data/AppContext';
 
+import { loadData } from './data/character/character.actions';
 import { loadUserData } from './data/user/user.actions';
 
 import Mdp from './pages/Mdp';
@@ -42,15 +43,17 @@ interface StateProps {
 }
 
 interface DispatchProps {
+  loadData: typeof loadData;
   loadUserData: typeof loadUserData;
 }
 
 interface IonicAppProps extends StateProps, DispatchProps { }
 
-const IonicApp: React.FC<IonicAppProps> = ({ darkMode, loadUserData }) => {
+const IonicApp: React.FC<IonicAppProps> = ({ darkMode, loadData, loadUserData }) => {
 
   useEffect(() => {
     loadUserData();
+    loadData();
     // eslint-disable-next-line
   }, []);
 
@@ -80,6 +83,6 @@ const IonicAppConnected = connect<{}, StateProps, DispatchProps>({
   mapStateToProps: (state) => ({
     darkMode: state.user.darkMode
   }),
-  mapDispatchToProps: {  loadUserData },
+  mapDispatchToProps: { loadData, loadUserData },
   component: IonicApp
 });

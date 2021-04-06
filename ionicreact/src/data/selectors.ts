@@ -9,11 +9,11 @@ export const getCharacterData = createSelector(
     const characterReplacements: { [key: string]: Character[] } = {};
 
     characters.forEach(character => {
-      character.replacements && character.replacements.forEach(name => {
-        if (characterReplacements[name]) {
-          characterReplacements[name].push(character);
+      character.replacements && character.replacements.forEach(id => {
+        if (characterReplacements[id]) {
+          characterReplacements[id].push(character);
         } else {
-          characterReplacements[name] = [character];
+          characterReplacements[id] = [character];
         }
       })
     });

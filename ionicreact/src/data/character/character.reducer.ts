@@ -6,5 +6,22 @@ export const characterReducer = (state: CharacterState, action: CharacterActions
     case 'set-data': {
       return { ...state, ...action.data };
     }
+    case 'set-character-replacement': {
+      console.log(`before ${action.id} ${action.replace} ${JSON.stringify(state.characters[action.id])}`);
+     /* return {
+        ...state, characters: [
+          ...state.characters.map(
+          (content, i) => i === action.id ? { ...content, selected: action.replace }
+            : content)
+        ]
+      };*/
+      return {
+        ...state, characters: [
+          ...state.characters.map(
+          (content, i) => i === 0 ? { ...content, selected: action.replace }
+            : content)
+        ]
+      };
+    }
   }
 }

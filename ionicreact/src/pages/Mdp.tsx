@@ -23,19 +23,15 @@ import {
   IonToast,
   IonText,
 } from "@ionic/react";
-import {
-  sunny,
-  moon,
-  clipboard,
-  refresh,
-} from "ionicons/icons";
+import { sunny, moon, clipboard, refresh } from "ionicons/icons";
 
 import "./Mdp.scss";
-import { Character } from '../models/Character';
+import { Character } from "../models/Character";
 import { connect } from "../data/connect";
 import { setDarkMode } from "../data/user/user.actions";
+import { setCharacterReplacement } from "../data/character/character.actions";
 import generateur from "generate-password";
-import CharacterItem from '../components/CharacterItem';
+import CharacterItem from "../components/CharacterItem";
 
 interface StateProps {
   characters: Character[];
@@ -43,6 +39,7 @@ interface StateProps {
 }
 interface DispatchProps {
   setDarkMode: typeof setDarkMode;
+  setCharacterReplacement: typeof setCharacterReplacement;
 }
 
 interface MdpProps extends StateProps, DispatchProps {}
@@ -59,13 +56,18 @@ const generatePassword = () => {
   });
 };
 
-const Mdp: React.FC<MdpProps> = ({ characters, darkMode, setDarkMode }) => {
+const Mdp: React.FC<MdpProps> = ({
+  setCharacterReplacement,
+  characters,
+  darkMode,
+  setDarkMode,
+}) => {
   const textReplace: string = "Remplacer la lettre ";
   const textSubstition: string = "Choisissez le caractère de substitution :";
   const [generatedPassword, setGeneratedPassword] = useState(
     generatePassword()
   );
-  const [password, setPassword] = useState("");
+  const [password, setPassword] = useState(""); // TODO remove aaa eee iii ooo
   const [newPassword, setNewPassword] = useState("");
   const [tooFewCharsetsError, setTooFewCharsetsError] = useState(true);
   const [tooShortError, setTooShortError] = useState(true);
@@ -83,9 +85,18 @@ const Mdp: React.FC<MdpProps> = ({ characters, darkMode, setDarkMode }) => {
   });
 
   useEffect(() => {
+    console.log(`useEffect characters ${JSON.stringify(characters[0])} `);
     //Replace characters
     const replaceChars = () => {
-      let source: string = password;//.toLocaleLowerCase();
+      let source: string = password; //.toLocaleLowerCase();
+      characters.map((character) => {
+        for (let i = 0; i < source.length; i++) {
+          console.log(`useEffect for ${character.name} ${character.selected} `);
+          source = source.replace(character.name, character.selected);
+        }
+        return "y";
+      });
+
       for (let i = 0; i < source.length; i++) {
         source = source.replace("e", eSelected);
         source = source.replace("a", aSelected);
@@ -116,7 +127,7 @@ const Mdp: React.FC<MdpProps> = ({ characters, darkMode, setDarkMode }) => {
       setNewPassword(source);
     };
     replaceChars();
-  }, [password, eSelected, aSelected, spaceSelected, deleteSpaces]);
+  }, [characters, password, eSelected, aSelected, spaceSelected, deleteSpaces]);
 
   const changeESelected = (e: string) => {
     setESelected(e);
@@ -181,10 +192,11 @@ const Mdp: React.FC<MdpProps> = ({ characters, darkMode, setDarkMode }) => {
             <IonCol>
               <form noValidate>
                 {" "}
-
                 <IonInput
                   className="mdp-input"
-                  color={tooShortError && tooFewCharsetsError ? "warning" : "success"}
+                  color={
+                    tooShortError && tooFewCharsetsError ? "warning" : "success"
+                  }
                   onIonChange={(e) => handleChangePwd(e.detail.value!)}
                   name="password"
                   value={password}
@@ -222,22 +234,23 @@ const Mdp: React.FC<MdpProps> = ({ characters, darkMode, setDarkMode }) => {
               ></IonInput>
             </IonCol>
             <IonCol>
-
-            {tooFewCharsetsError && (
-                  <IonText color="danger">* 4 jeux de caractères requis (minuscules, majuscules, chiffres, symboles).&nbsp;</IonText>
-                )}
-                {tooShortError ? (
-                  <IonText color="warning">
-                    <br/>* Trop court (12 caractères minimum).&nbsp;
-                  </IonText>
-                ) : (
-                  !tooFewCharsetsError &&
+              {tooFewCharsetsError && (
+                <IonText color="danger">
+                  * 4 jeux de caractères requis (minuscules, majuscules,
+                  chiffres, symboles).&nbsp;
+                </IonText>
+              )}
+              {tooShortError ? (
+                <IonText color="warning">
+                  <br />* Trop court (12 caractères minimum).&nbsp;
+                </IonText>
+              ) : (
+                !tooFewCharsetsError && (
                   <IonButton color="success" onClick={() => copyToClipboard()}>
-                <IonIcon color="light" icon={clipboard}></IonIcon>
-              </IonButton>
-                )}
-
-
+                    <IonIcon color="light" icon={clipboard}></IonIcon>
+                  </IonButton>
+                )
+              )}
             </IonCol>
           </IonRow>
         </IonGrid>
@@ -252,16 +265,14 @@ const Mdp: React.FC<MdpProps> = ({ characters, darkMode, setDarkMode }) => {
 
         <IonGrid>
           <IonRow>
-
-          {characters.map(character => (
-                <IonCol size="12" size-md="6" key={character.id}>
-                  <CharacterItem
-                    key={character.id}
-                    character={character}
-                  />
-                </IonCol>
-              ))}
-
+            {characters.map((character) => (
+              <IonCol key={character.id}>
+                <CharacterItem
+                  character={character}
+                  onSetCharacterReplacement={setCharacterReplacement}
+                />
+              </IonCol>
+            ))}
 
             {/* e */}
             <IonCol>
@@ -455,7 +466,7 @@ const Mdp: React.FC<MdpProps> = ({ characters, darkMode, setDarkMode }) => {
         </IonGrid>
 
         <IonLabel>
-          <p>Version 1.0.20210402</p>
+          <p>Version 1.0.20210406</p>
         </IonLabel>
       </IonContent>
     </IonPage>
@@ -469,6 +480,7 @@ export default connect<{}, StateProps, DispatchProps>({
   }),
   mapDispatchToProps: {
     setDarkMode,
+    setCharacterReplacement,
   },
   component: Mdp,
 });

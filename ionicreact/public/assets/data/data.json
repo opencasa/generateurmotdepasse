@@ -1,29 +1,43 @@
 {
   "characters": [
     {
+      "name": "i",
+      "replacements": ["1","!","|"],
+      "selected": "!",
+      "id": "0"
+    }
+  ],
+  "next": [
+    {
       "name": "a",
       "replacements": ["4","@","à"],
+      "selected": "4",
       "id": "1"
     },
     {
       "name": "e",
       "replacements": ["3","€","é"],
-      "id": "2"
+      "selected": "3",
+
+      "id": "5"
     },
     {
       "name": "i",
       "replacements": ["1","!","|"],
-      "id": "3"
+      "selected": "!",
+      "id": "9"
     },
     {
       "name": "o",
       "replacements": ["0","#"],
-      "id": "4"
+      "selected": "0",
+      "id": "15"
     },
     {
       "name": "espaces",
       "replacements": ["-","_",".","+","-","~"],
-      "id": "5"
+      "selected": "-",
+      "id": "42"
     }
   ]
 }

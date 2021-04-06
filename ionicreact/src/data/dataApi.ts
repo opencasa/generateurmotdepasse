@@ -33,3 +33,11 @@ export const getUserData = async () => {
 export const setDarkModeData = async (darkMode: boolean) => {
   await Storage.set({ key: DARKMODE, value: JSON.stringify(darkMode) });
 }
+
+export const setCharacterReplacementData = async (id: number, replace: string) => {
+  if (!replace) {
+    await Storage.remove({ key: id.toString() });
+  } else {
+    await Storage.set({ key: id.toString(), value: replace });
+  }
+}
