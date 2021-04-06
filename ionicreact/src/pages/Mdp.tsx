@@ -67,7 +67,7 @@ const Mdp: React.FC<MdpProps> = ({
   const [generatedPassword, setGeneratedPassword] = useState(
     generatePassword()
   );
-  const [password, setPassword] = useState(""); // TODO remove aaa eee iii ooo
+  const [password, setPassword] = useState(""); // test: aaa eee iii ooo
   const [newPassword, setNewPassword] = useState("");
   const [tooFewCharsetsError, setTooFewCharsetsError] = useState(true);
   const [tooShortError, setTooShortError] = useState(true);
@@ -94,7 +94,7 @@ const Mdp: React.FC<MdpProps> = ({
           console.log(`useEffect for ${character.name} ${character.selected} `);
           source = source.replace(character.name, character.selected);
         }
-        return "y";
+        return "ok";
       });
 
       for (let i = 0; i < source.length; i++) {
@@ -109,12 +109,17 @@ const Mdp: React.FC<MdpProps> = ({
 
       setTooShortError(source.length < 12);
 
-      const strongRegex = new RegExp(
+      /* 4 charsets const strongRegex = new RegExp(
         "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{4,})"
       );
-      /*const mediumRegex = new RegExp(
-        "^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{12,})"
-      );*/
+      const mediumRegex = new RegExp(
+        "^( ((?=.*[a-z])(?=.*[A-Z])) | ((?=.*[a-z])(?=.*[0-9])) | ((?=.*[A-Z])(?=.*[0-9])) ) (?=.{12,})"
+      );
+      const mediumRegex = new RegExp(
+        "^( ((?=.*[a-z])(?=.*[A-Z])) | ((?=.*[a-z])(?=.*[0-9])) | ((?=.*[A-Z])(?=.*[0-9])) ) "
+      );
+      3 charsets */
+      const strongRegex = new RegExp( "^(((?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]))|((?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]))|((?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*]))|((?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])))(?=.{4,})" );
       if (strongRegex.test(source)) {
         console.log(`replaceChars strongRegex ${source} `);
         setTooFewCharsetsError(false);
@@ -123,7 +128,6 @@ const Mdp: React.FC<MdpProps> = ({
         setTooFewCharsetsError(true);
       }
 
-      //console.log(`replaceChars source ${source} `);
       setNewPassword(source);
     };
     replaceChars();
@@ -236,8 +240,8 @@ const Mdp: React.FC<MdpProps> = ({
             <IonCol>
               {tooFewCharsetsError && (
                 <IonText color="danger">
-                  * 4 jeux de caractères requis (minuscules, majuscules,
-                  chiffres, symboles).&nbsp;
+                  * 3 jeux de caractères requis parmi minuscules, majuscules,
+                  chiffres, symboles.&nbsp;
                 </IonText>
               )}
               {tooShortError ? (
@@ -246,9 +250,12 @@ const Mdp: React.FC<MdpProps> = ({
                 </IonText>
               ) : (
                 !tooFewCharsetsError && (
+                  <>
                   <IonButton color="success" onClick={() => copyToClipboard()}>
                     <IonIcon color="light" icon={clipboard}></IonIcon>
                   </IonButton>
+                  <IonText color="success">&nbsp;Respecte la complexité requise de 3 jeux de caractères distincts.</IonText>
+                </>
                 )
               )}
             </IonCol>
