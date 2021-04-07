@@ -149,6 +149,10 @@ const Mdp: React.FC<MdpProps> = ({
     navigator.clipboard.writeText(newPassword);
     setShowToast(true);
   };
+  const copyRandomToClipboard = () => {
+    navigator.clipboard.writeText(generatedPassword);
+    setShowToast(true);
+  };
 
   return (
     <IonPage id="mdp-page">
@@ -185,6 +189,17 @@ const Mdp: React.FC<MdpProps> = ({
               >
                 <IonIcon color="light" icon={refresh}></IonIcon>
               </IonButton>
+              <IonButton
+                      color="success"
+                      onClick={() => copyRandomToClipboard()}
+                    >
+                      <IonIcon color="light" icon={clipboard}></IonIcon><IonText className="ion-text-lowercase" >
+                    Copier
+                    </IonText>
+                    </IonButton>
+                    <IonText color="success">
+                    &nbsp;Copier dans le presse-papiers.
+                    </IonText>
             </IonCol>
           </IonRow>
           <IonRow>
