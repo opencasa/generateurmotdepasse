@@ -80,13 +80,13 @@ const Mdp: React.FC<MdpProps> = ({
   const [ySelected, setYSelected] = useState<string>("7");
   const [spaceSelected, setSpaceSelected] = useState<string>("-");
 
- /* TODO const [processA, setProcessA] = useState(false);
-  const [processE, setProcessE] = useState(false);
-  const [processI, setProcessI] = useState(false);
-  const [processO, setProcessO] = useState(false);
-  const [processU, setProcessU] = useState(false);
-  const [processY, setProcessY] = useState(false);*/
-  const [deleteSpaces, setDeleteSpaces] = useState(false);
+  const [processA, setProcessA] = useState(true);
+  const [processE, setProcessE] = useState(true);
+  const [processI, setProcessI] = useState(true);
+  const [processO, setProcessO] = useState(true);
+  const [processU, setProcessU] = useState(true);
+  const [processY, setProcessY] = useState(true);
+  const [deleteSpaces, setDeleteSpaces] = useState(true);
 
   const inputRef = useRef<any>(null);
 
@@ -108,12 +108,12 @@ const Mdp: React.FC<MdpProps> = ({
       });*/
 
       for (let i = 0; i < source.length; i++) {
-        source = source.replace("a", aSelected);
-        source = source.replace("e", eSelected);
-        source = source.replace("i", iSelected);
-        source = source.replace("o", oSelected);
-        source = source.replace("u", uSelected);
-        source = source.replace("y", ySelected);
+        if (!processA) source = source.replace("a", aSelected);
+        if (!processE) source = source.replace("e", eSelected);
+        if (!processI) source = source.replace("i", iSelected);
+        if (!processO) source = source.replace("o", oSelected);
+        if (!processU) source = source.replace("u", uSelected);
+        if (!processY) source = source.replace("y", ySelected);
         if (deleteSpaces) {
           source = source.replace(" ", "");
         } else {
@@ -145,7 +145,24 @@ const Mdp: React.FC<MdpProps> = ({
       setNewPassword(source);
     };
     replaceChars();
-  }, [characters, password, aSelected, eSelected, iSelected, oSelected, uSelected, ySelected, spaceSelected, deleteSpaces]);
+  }, [
+    characters,
+    password,
+    aSelected,
+    eSelected,
+    iSelected,
+    oSelected,
+    uSelected,
+    ySelected,
+    spaceSelected,
+    deleteSpaces,
+    processA,
+    processE,
+    processI,
+    processO,
+    processU,
+    processY,
+  ]);
 
   const changeASelected = (e: string) => {
     setASelected(e);
@@ -216,16 +233,15 @@ const Mdp: React.FC<MdpProps> = ({
                 <IonIcon color="light" icon={refresh}></IonIcon>
               </IonButton>
               <IonButton
-                      color="success"
-                      onClick={() => copyRandomToClipboard()}
-                    >
-                      <IonIcon color="light" icon={clipboard}></IonIcon><IonText className="ion-text-lowercase" >
-                    Copier
-                    </IonText>
-                    </IonButton>
-                    <IonText color="success">
-                    &nbsp;Copier dans le presse-papiers.
-                    </IonText>
+                color="success"
+                onClick={() => copyRandomToClipboard()}
+              >
+                <IonIcon color="light" icon={clipboard}></IonIcon>
+                <IonText className="ion-text-lowercase">Copier</IonText>
+              </IonButton>
+              <IonText color="success">
+                &nbsp;Copier dans le presse-papiers.
+              </IonText>
             </IonCol>
           </IonRow>
           <IonRow>
@@ -292,13 +308,14 @@ const Mdp: React.FC<MdpProps> = ({
                       color="success"
                       onClick={() => copyToClipboard()}
                     >
-                      <IonIcon color="light" icon={clipboard}></IonIcon><IonText className="ion-text-lowercase" >
-                    Copier
-                    </IonText>
+                      <IonIcon color="light" icon={clipboard}></IonIcon>
+                      <IonText className="ion-text-lowercase">Copier</IonText>
                     </IonButton>
                     <IonText color="success">
-                    &nbsp;Copier dans le presse-papiers.&nbsp;<br/>Respecte la complexité requise de 3 jeux de
-                      caractères distincts.
+                      &nbsp;Copier dans le presse-papiers.&nbsp;
+                      <br />
+                      Respecte la complexité requise de 3 jeux de caractères
+                      distincts.
                     </IonText>
                   </>
                 )
@@ -335,38 +352,65 @@ const Mdp: React.FC<MdpProps> = ({
                   </IonLabel>
                 </IonCardHeader>
                 <IonCardContent>
-                  <IonLabel>
-                    <h2>{`${textSubstition}`}</h2>
-                  </IonLabel>
-                  <IonButtons>
-                    <IonRadioGroup
-                      value={aSelected}
-                      onIonChange={(e) => changeASelected(e.detail.value)}
-                    >
-                      <IonRow>
+                  <IonItem>
+                    <IonToggle
+                      slot="start"
+                      checked={processA}
+                      onIonChange={(e) => setProcessA(e.detail.checked)}
+                    />
+                    <IonLabel>Désactivé &nbsp;</IonLabel>
+                  </IonItem>
 
-                        <IonCol>
-                          <IonItem>
-                            <IonLabel>4&nbsp;</IonLabel>
-                            <IonRadio mode="md" item-left value="4"></IonRadio>
-                          </IonItem>
-                        </IonCol>
+                  {processA ? null : (
+                    <>
+                      <IonLabel>
+                        <h2>{`${textSubstition}`}</h2>
+                      </IonLabel>
+                      <IonButtons>
+                        <IonRadioGroup
+                          value={aSelected}
+                          onIonChange={(e) => changeASelected(e.detail.value)}
+                        >
+                          <IonRow>
+                            <IonCol>
+                              <IonItem>
+                                <IonLabel>4&nbsp;</IonLabel>
+                                <IonRadio
+                                  mode="md"
+                                  item-left
+                                  value="4"
+                                ></IonRadio>
+                              </IonItem>
+                            </IonCol>
 
-                        <IonCol>
-                          <IonItem>
-                            <IonLabel>@&nbsp;</IonLabel>
-                            <IonRadio mode="md" item-left value="@"></IonRadio>
-                          </IonItem>
-                        </IonCol>
-
-
-                      </IonRow>
-                    </IonRadioGroup>
-                  </IonButtons>
+                            <IonCol>
+                              <IonItem>
+                                <IonLabel>@&nbsp;</IonLabel>
+                                <IonRadio
+                                  mode="md"
+                                  item-left
+                                  value="@"
+                                ></IonRadio>
+                              </IonItem>
+                            </IonCol>
+                            <IonCol>
+                              <IonItem>
+                                <IonLabel>A&nbsp;</IonLabel>
+                                <IonRadio
+                                  mode="md"
+                                  item-left
+                                  value="A"
+                                ></IonRadio>
+                              </IonItem>
+                            </IonCol>
+                          </IonRow>
+                        </IonRadioGroup>
+                      </IonButtons>
+                    </>
+                  )}
                 </IonCardContent>
               </IonCard>
             </IonCol>
-
 
             {/* e */}
             <IonCol>
@@ -377,34 +421,62 @@ const Mdp: React.FC<MdpProps> = ({
                   </IonLabel>
                 </IonCardHeader>
                 <IonCardContent>
-                  <IonLabel>
-                    <h2>{`${textSubstition}`}</h2>
-                  </IonLabel>
-                  <IonButtons>
-                    <IonRadioGroup
-                      value={eSelected}
-                      onIonChange={(e) => changeESelected(e.detail.value)}
-                    >
-                      <IonRow>
+                  <IonItem>
+                    <IonToggle
+                      slot="start"
+                      checked={processE}
+                      onIonChange={(e) => setProcessE(e.detail.checked)}
+                    />
+                    <IonLabel>Désactivé &nbsp;</IonLabel>
+                  </IonItem>
 
-                        <IonCol>
-                          <IonItem>
-                            <IonLabel>3&nbsp;</IonLabel>
-                            <IonRadio mode="md" item-left value="3"></IonRadio>
-                          </IonItem>
-                        </IonCol>
+                  {processE ? null : (
+                    <>
+                      <IonLabel>
+                        <h2>{`${textSubstition}`}</h2>
+                      </IonLabel>
+                      <IonButtons>
+                        <IonRadioGroup
+                          value={eSelected}
+                          onIonChange={(e) => changeESelected(e.detail.value)}
+                        >
+                          <IonRow>
+                            <IonCol>
+                              <IonItem>
+                                <IonLabel>3&nbsp;</IonLabel>
+                                <IonRadio
+                                  mode="md"
+                                  item-left
+                                  value="3"
+                                ></IonRadio>
+                              </IonItem>
+                            </IonCol>
 
-                        <IonCol>
-                          <IonItem>
-                            <IonLabel>€&nbsp;</IonLabel>
-                            <IonRadio mode="md" item-left value="€"></IonRadio>
-                          </IonItem>
-                        </IonCol>
-
-
-                      </IonRow>
-                    </IonRadioGroup>
-                  </IonButtons>
+                            <IonCol>
+                              <IonItem>
+                                <IonLabel>€&nbsp;</IonLabel>
+                                <IonRadio
+                                  mode="md"
+                                  item-left
+                                  value="€"
+                                ></IonRadio>
+                              </IonItem>
+                            </IonCol>
+                            <IonCol>
+                              <IonItem>
+                                <IonLabel>E&nbsp;</IonLabel>
+                                <IonRadio
+                                  mode="md"
+                                  item-left
+                                  value="E"
+                                ></IonRadio>
+                              </IonItem>
+                            </IonCol>
+                          </IonRow>
+                        </IonRadioGroup>
+                      </IonButtons>
+                    </>
+                  )}
                 </IonCardContent>
               </IonCard>
             </IonCol>
@@ -418,42 +490,66 @@ const Mdp: React.FC<MdpProps> = ({
                   </IonLabel>
                 </IonCardHeader>
                 <IonCardContent>
-                  <IonLabel>
-                    <h2>{`${textSubstition}`}</h2>
-                  </IonLabel>
-                  <IonButtons>
-                    <IonRadioGroup
-                      value={iSelected}
-                      onIonChange={(e) => changeISelected(e.detail.value)}
-                    >
-                      <IonRow>
+                  <IonItem>
+                    <IonToggle
+                      slot="start"
+                      checked={processI}
+                      onIonChange={(e) => setProcessI(e.detail.checked)}
+                    />
+                    <IonLabel>Désactivé &nbsp;</IonLabel>
+                  </IonItem>
 
-                        <IonCol>
-                          <IonItem>
-                            <IonLabel>1&nbsp;</IonLabel>
-                            <IonRadio mode="md" item-left value="1"></IonRadio>
-                          </IonItem>
-                        </IonCol>
-                        <IonCol>
-                          <IonItem>
-                            <IonLabel>!&nbsp;</IonLabel>
-                            <IonRadio mode="md" item-left value="!"></IonRadio>
-                          </IonItem>
-                        </IonCol>
-                        <IonCol>
-                          <IonItem>
-                            <IonLabel>|&nbsp;</IonLabel>
-                            <IonRadio mode="md" item-left value="|"></IonRadio>
-                          </IonItem>
-                        </IonCol>
-                      </IonRow>
-                    </IonRadioGroup>
-                  </IonButtons>
+                  {processI ? null : (
+                    <>
+                      <IonLabel>
+                        <h2>{`${textSubstition}`}</h2>
+                      </IonLabel>
+                      <IonButtons>
+                        <IonRadioGroup
+                          value={iSelected}
+                          onIonChange={(e) => changeISelected(e.detail.value)}
+                        >
+                          <IonRow>
+                            <IonCol>
+                              <IonItem>
+                                <IonLabel>1&nbsp;</IonLabel>
+                                <IonRadio
+                                  mode="md"
+                                  item-left
+                                  value="1"
+                                ></IonRadio>
+                              </IonItem>
+                            </IonCol>
+                            <IonCol>
+                              <IonItem>
+                                <IonLabel>!&nbsp;</IonLabel>
+                                <IonRadio
+                                  mode="md"
+                                  item-left
+                                  value="!"
+                                ></IonRadio>
+                              </IonItem>
+                            </IonCol>
+                            <IonCol>
+                              <IonItem>
+                                <IonLabel>I&nbsp;</IonLabel>
+                                <IonRadio
+                                  mode="md"
+                                  item-left
+                                  value="I"
+                                ></IonRadio>
+                              </IonItem>
+                            </IonCol>
+                          </IonRow>
+                        </IonRadioGroup>
+                      </IonButtons>
+                    </>
+                  )}
                 </IonCardContent>
               </IonCard>
             </IonCol>
-
-
+          </IonRow>
+          <IonRow>
             {/* o */}
             <IonCol>
               <IonCard className="category-card">
@@ -463,43 +559,66 @@ const Mdp: React.FC<MdpProps> = ({
                   </IonLabel>
                 </IonCardHeader>
                 <IonCardContent>
-                  <IonLabel>
-                    <h2>{`${textSubstition}`}</h2>
-                  </IonLabel>
-                  <IonButtons>
-                    <IonRadioGroup
-                      value={oSelected}
-                      onIonChange={(e) => changeOSelected(e.detail.value)}
-                    >
-                      <IonRow>
+                  <IonItem>
+                    <IonToggle
+                      slot="start"
+                      checked={processO}
+                      onIonChange={(e) => setProcessO(e.detail.checked)}
+                    />
+                    <IonLabel>Désactivé &nbsp;</IonLabel>
+                  </IonItem>
 
-                        <IonCol>
-                          <IonItem>
-                            <IonLabel>0&nbsp;</IonLabel>
-                            <IonRadio mode="md" item-left value="0"></IonRadio>
-                          </IonItem>
-                        </IonCol>
+                  {processO ? null : (
+                    <>
+                      <IonLabel>
+                        <h2>{`${textSubstition}`}</h2>
+                      </IonLabel>
+                      <IonButtons>
+                        <IonRadioGroup
+                          value={oSelected}
+                          onIonChange={(e) => changeOSelected(e.detail.value)}
+                        >
+                          <IonRow>
+                            <IonCol>
+                              <IonItem>
+                                <IonLabel>0&nbsp;</IonLabel>
+                                <IonRadio
+                                  mode="md"
+                                  item-left
+                                  value="0"
+                                ></IonRadio>
+                              </IonItem>
+                            </IonCol>
 
-                        <IonCol>
-                          <IonItem>
-                            <IonLabel>*&nbsp;</IonLabel>
-                            <IonRadio mode="md" item-left value="*"></IonRadio>
-                          </IonItem>
-                        </IonCol>
+                            <IonCol>
+                              <IonItem>
+                                <IonLabel>*&nbsp;</IonLabel>
+                                <IonRadio
+                                  mode="md"
+                                  item-left
+                                  value="*"
+                                ></IonRadio>
+                              </IonItem>
+                            </IonCol>
 
-                        <IonCol>
-                          <IonItem>
-                            <IonLabel>%&nbsp;</IonLabel>
-                            <IonRadio mode="md" item-left value="%"></IonRadio>
-                          </IonItem>
-                        </IonCol>
-                      </IonRow>
-                    </IonRadioGroup>
-                  </IonButtons>
+                            <IonCol>
+                              <IonItem>
+                                <IonLabel>%&nbsp;</IonLabel>
+                                <IonRadio
+                                  mode="md"
+                                  item-left
+                                  value="%"
+                                ></IonRadio>
+                              </IonItem>
+                            </IonCol>
+                          </IonRow>
+                        </IonRadioGroup>
+                      </IonButtons>
+                    </>
+                  )}
                 </IonCardContent>
               </IonCard>
             </IonCol>
-
 
             {/* u */}
             <IonCol>
@@ -510,43 +629,66 @@ const Mdp: React.FC<MdpProps> = ({
                   </IonLabel>
                 </IonCardHeader>
                 <IonCardContent>
-                  <IonLabel>
-                    <h2>{`${textSubstition}`}</h2>
-                  </IonLabel>
-                  <IonButtons>
-                    <IonRadioGroup
-                      value={uSelected}
-                      onIonChange={(e) => changeUSelected(e.detail.value)}
-                    >
-                      <IonRow>
+                  <IonItem>
+                    <IonToggle
+                      slot="start"
+                      checked={processU}
+                      onIonChange={(e) => setProcessU(e.detail.checked)}
+                    />
+                    <IonLabel>Désactivé &nbsp;</IonLabel>
+                  </IonItem>
 
-                        <IonCol>
-                          <IonItem>
-                            <IonLabel>[&nbsp;</IonLabel>
-                            <IonRadio mode="md" item-left value="["></IonRadio>
-                          </IonItem>
-                        </IonCol>
+                  {processU ? null : (
+                    <>
+                      <IonLabel>
+                        <h2>{`${textSubstition}`}</h2>
+                      </IonLabel>
+                      <IonButtons>
+                        <IonRadioGroup
+                          value={uSelected}
+                          onIonChange={(e) => changeUSelected(e.detail.value)}
+                        >
+                          <IonRow>
+                            <IonCol>
+                              <IonItem>
+                                <IonLabel>[&nbsp;</IonLabel>
+                                <IonRadio
+                                  mode="md"
+                                  item-left
+                                  value="["
+                                ></IonRadio>
+                              </IonItem>
+                            </IonCol>
 
-                        <IonCol>
-                          <IonItem>
-                            <IonLabel>(&nbsp;</IonLabel>
-                            <IonRadio mode="md" item-left value="("></IonRadio>
-                          </IonItem>
-                        </IonCol>
+                            <IonCol>
+                              <IonItem>
+                                <IonLabel>(&nbsp;</IonLabel>
+                                <IonRadio
+                                  mode="md"
+                                  item-left
+                                  value="("
+                                ></IonRadio>
+                              </IonItem>
+                            </IonCol>
 
-                        <IonCol>
-                          <IonItem>
-                            <IonLabel>)&nbsp;</IonLabel>
-                            <IonRadio mode="md" item-left value=")"></IonRadio>
-                          </IonItem>
-                        </IonCol>
-                      </IonRow>
-                    </IonRadioGroup>
-                  </IonButtons>
+                            <IonCol>
+                              <IonItem>
+                                <IonLabel>U&nbsp;</IonLabel>
+                                <IonRadio
+                                  mode="md"
+                                  item-left
+                                  value="U"
+                                ></IonRadio>
+                              </IonItem>
+                            </IonCol>
+                          </IonRow>
+                        </IonRadioGroup>
+                      </IonButtons>
+                    </>
+                  )}
                 </IonCardContent>
               </IonCard>
             </IonCol>
-
 
             {/* y */}
             <IonCol>
@@ -557,41 +699,57 @@ const Mdp: React.FC<MdpProps> = ({
                   </IonLabel>
                 </IonCardHeader>
                 <IonCardContent>
-                  <IonLabel>
-                    <h2>{`${textSubstition}`}</h2>
-                  </IonLabel>
-                  <IonButtons>
-                    <IonRadioGroup
-                      value={ySelected}
-                      onIonChange={(e) => changeYSelected(e.detail.value)}
-                    >
-                      <IonRow>
+                  <IonItem>
+                    <IonToggle
+                      slot="start"
+                      checked={processY}
+                      onIonChange={(e) => setProcessY(e.detail.checked)}
+                    />
+                    <IonLabel>Désactivé &nbsp;</IonLabel>
+                  </IonItem>
 
-                        <IonCol>
-                          <IonItem>
-                            <IonLabel>7&nbsp;</IonLabel>
-                            <IonRadio mode="md" item-left value="7"></IonRadio>
-                          </IonItem>
-                        </IonCol>
+                  {processY ? null : (
+                    <>
+                      <IonLabel>
+                        <h2>{`${textSubstition}`}</h2>
+                      </IonLabel>
+                      <IonButtons>
+                        <IonRadioGroup
+                          value={ySelected}
+                          onIonChange={(e) => changeYSelected(e.detail.value)}
+                        >
+                          <IonRow>
+                            <IonCol>
+                              <IonItem>
+                                <IonLabel>7&nbsp;</IonLabel>
+                                <IonRadio
+                                  mode="md"
+                                  item-left
+                                  value="7"
+                                ></IonRadio>
+                              </IonItem>
+                            </IonCol>
 
-                        <IonCol>
-                          <IonItem>
-                            <IonLabel>^&nbsp;</IonLabel>
-                            <IonRadio mode="md" item-left value="^"></IonRadio>
-                          </IonItem>
-                        </IonCol>
-
-
-                      </IonRow>
-                    </IonRadioGroup>
-                  </IonButtons>
+                            <IonCol>
+                              <IonItem>
+                                <IonLabel>^&nbsp;</IonLabel>
+                                <IonRadio
+                                  mode="md"
+                                  item-left
+                                  value="Y"
+                                ></IonRadio>
+                              </IonItem>
+                            </IonCol>
+                          </IonRow>
+                        </IonRadioGroup>
+                      </IonButtons>
+                    </>
+                  )}
                 </IonCardContent>
               </IonCard>
             </IonCol>
-
-
-
-
+          </IonRow>
+          <IonRow>
             {/* space */}
             <IonCol>
               <IonCard className="category-card">
@@ -601,6 +759,14 @@ const Mdp: React.FC<MdpProps> = ({
                   </IonLabel>
                 </IonCardHeader>
                 <IonCardContent>
+                  <IonItem>
+                    <IonToggle
+                      slot="start"
+                      checked={deleteSpaces}
+                      onIonChange={(e) => setDeleteSpaces(e.detail.checked)}
+                    />
+                    <IonLabel>Supprimer les espaces &nbsp;</IonLabel>
+                  </IonItem>
                   {deleteSpaces ? null : (
                     <>
                       <IonLabel>
@@ -665,21 +831,11 @@ const Mdp: React.FC<MdpProps> = ({
                                 ></IonRadio>
                               </IonItem>
                             </IonCol>
-
                           </IonRow>
                         </IonRadioGroup>
                       </IonButtons>
                     </>
                   )}
-                  <IonLabel>
-                    <h2>
-                      Supprimer les espaces &nbsp;
-                      <IonToggle
-                        checked={deleteSpaces}
-                        onIonChange={(e) => setDeleteSpaces(e.detail.checked)}
-                      />
-                    </h2>
-                  </IonLabel>
                 </IonCardContent>
               </IonCard>
             </IonCol>
