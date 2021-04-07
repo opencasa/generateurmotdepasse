@@ -73,7 +73,7 @@ const Mdp: React.FC<MdpProps> = ({
   const [tooShortError, setTooShortError] = useState(true);
   const [showToast, setShowToast] = useState(false);
   const [eSelected, setESelected] = useState<string>("3");
-  const [aSelected, setASelected] = useState<string>("@");
+  const [iSelected, setISelected] = useState<string>("1");
   const [spaceSelected, setSpaceSelected] = useState<string>("-");
 
   const [deleteSpaces, setDeleteSpaces] = useState(false);
@@ -99,7 +99,7 @@ const Mdp: React.FC<MdpProps> = ({
 
       for (let i = 0; i < source.length; i++) {
         source = source.replace("e", eSelected);
-        source = source.replace("a", aSelected);
+        source = source.replace("i", iSelected);
         if (deleteSpaces) {
           source = source.replace(" ", "");
         } else {
@@ -110,34 +110,34 @@ const Mdp: React.FC<MdpProps> = ({
       setTooShortError(source.length < 12);
 
       /* 4 charsets const strongRegex = new RegExp(
-        "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{4,})"
+        "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])"
       );
       const mediumRegex = new RegExp(
-        "^( ((?=.*[a-z])(?=.*[A-Z])) | ((?=.*[a-z])(?=.*[0-9])) | ((?=.*[A-Z])(?=.*[0-9])) ) (?=.{12,})"
+        "^( ((?=.*[a-z])(?=.*[A-Z])) | ((?=.*[a-z])(?=.*[0-9])) | ((?=.*[A-Z])(?=.*[0-9])) ) (?=.{4,})"
       );
-      const mediumRegex = new RegExp(
-        "^( ((?=.*[a-z])(?=.*[A-Z])) | ((?=.*[a-z])(?=.*[0-9])) | ((?=.*[A-Z])(?=.*[0-9])) ) "
-      );
+
       3 charsets */
-      const strongRegex = new RegExp( "^(((?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]))|((?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]))|((?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*]))|((?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])))(?=.{4,})" );
+      const strongRegex = new RegExp(
+        "^(((?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]))|((?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]))|((?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*]))|((?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])))(?=.{4,})"
+      );
       if (strongRegex.test(source)) {
-        console.log(`replaceChars strongRegex ${source} `);
+        //console.log(`replaceChars strongRegex ${source} `);
         setTooFewCharsetsError(false);
       } else {
-        console.log(`replaceChars too few charsets ${source} `);
+        //console.log(`replaceChars too few charsets ${source} `);
         setTooFewCharsetsError(true);
       }
 
       setNewPassword(source);
     };
     replaceChars();
-  }, [characters, password, eSelected, aSelected, spaceSelected, deleteSpaces]);
+  }, [characters, password, eSelected, iSelected, spaceSelected, deleteSpaces]);
 
   const changeESelected = (e: string) => {
     setESelected(e);
   };
-  const changeASelected = (e: string) => {
-    setASelected(e);
+  const changeISelected = (e: string) => {
+    setISelected(e);
   };
   const changeSpaceSelected = (e: string) => {
     setSpaceSelected(e);
@@ -199,7 +199,7 @@ const Mdp: React.FC<MdpProps> = ({
                 <IonInput
                   className="mdp-input"
                   color={
-                    tooShortError && tooFewCharsetsError ? "warning" : "success"
+                    tooShortError && tooFewCharsetsError ? "black" : "success"
                   }
                   onIonChange={(e) => handleChangePwd(e.detail.value!)}
                   name="password"
@@ -209,11 +209,7 @@ const Mdp: React.FC<MdpProps> = ({
                 ></IonInput>{" "}
               </form>
             </IonCol>
-            <IonCol>
-              {/* <p className="ion-padding-start"> */}
-
-              {/* </p> */}
-            </IonCol>
+            <IonCol></IonCol>
           </IonRow>
           <IonRow>
             <IonCol>
@@ -251,11 +247,17 @@ const Mdp: React.FC<MdpProps> = ({
               ) : (
                 !tooFewCharsetsError && (
                   <>
-                  <IonButton color="success" onClick={() => copyToClipboard()}>
-                    <IonIcon color="light" icon={clipboard}></IonIcon>
-                  </IonButton>
-                  <IonText color="success">&nbsp;Respecte la complexité requise de 3 jeux de caractères distincts.</IonText>
-                </>
+                    <IonButton
+                      color="success"
+                      onClick={() => copyToClipboard()}
+                    >
+                      <IonIcon color="light" icon={clipboard}></IonIcon>
+                    </IonButton>
+                    <IonText color="success">
+                      &nbsp;Respecte la complexité requise de 3 jeux de
+                      caractères distincts.
+                    </IonText>
+                  </>
                 )
               )}
             </IonCol>
@@ -286,7 +288,7 @@ const Mdp: React.FC<MdpProps> = ({
               <IonCard className="category-card">
                 <IonCardHeader>
                   <IonLabel>
-                    <h2>{`${textReplace}`} "e"</h2>
+                    <h2>{`${textReplace}`} "e"?</h2>
                   </IonLabel>
                 </IonCardHeader>
                 <IonCardContent>
@@ -299,6 +301,7 @@ const Mdp: React.FC<MdpProps> = ({
                       onIonChange={(e) => changeESelected(e.detail.value)}
                     >
                       <IonRow>
+
                         <IonCol>
                           <IonItem>
                             <IonLabel>3&nbsp;</IonLabel>
@@ -326,12 +329,12 @@ const Mdp: React.FC<MdpProps> = ({
               </IonCard>
             </IonCol>
 
-            {/* a */}
+            {/* i */}
             <IonCol>
               <IonCard className="category-card">
                 <IonCardHeader>
                   <IonLabel>
-                    <h2>{`${textReplace}`} "a"</h2>
+                    <h2>{`${textReplace}`} "i"?</h2>
                   </IonLabel>
                 </IonCardHeader>
                 <IonCardContent>
@@ -340,26 +343,27 @@ const Mdp: React.FC<MdpProps> = ({
                   </IonLabel>
                   <IonButtons>
                     <IonRadioGroup
-                      value={aSelected}
-                      onIonChange={(e) => changeASelected(e.detail.value)}
+                      value={iSelected}
+                      onIonChange={(e) => changeISelected(e.detail.value)}
                     >
                       <IonRow>
+
                         <IonCol>
                           <IonItem>
-                            <IonLabel>@&nbsp;</IonLabel>
-                            <IonRadio mode="md" item-left value="@"></IonRadio>
+                            <IonLabel>1&nbsp;</IonLabel>
+                            <IonRadio mode="md" item-left value="1"></IonRadio>
                           </IonItem>
                         </IonCol>
                         <IonCol>
                           <IonItem>
-                            <IonLabel>4&nbsp;</IonLabel>
-                            <IonRadio mode="md" item-left value="4"></IonRadio>
+                            <IonLabel>!&nbsp;</IonLabel>
+                            <IonRadio mode="md" item-left value="!"></IonRadio>
                           </IonItem>
                         </IonCol>
                         <IonCol>
                           <IonItem>
-                            <IonLabel>à&nbsp;</IonLabel>
-                            <IonRadio mode="md" item-left value="à"></IonRadio>
+                            <IonLabel>|&nbsp;</IonLabel>
+                            <IonRadio mode="md" item-left value="|"></IonRadio>
                           </IonItem>
                         </IonCol>
                       </IonRow>
@@ -374,7 +378,7 @@ const Mdp: React.FC<MdpProps> = ({
               <IonCard className="category-card">
                 <IonCardHeader>
                   <IonLabel>
-                    <h2>Remplacer les espaces</h2>
+                    <h2>Remplacer les espaces?</h2>
                   </IonLabel>
                 </IonCardHeader>
                 <IonCardContent>
@@ -473,7 +477,7 @@ const Mdp: React.FC<MdpProps> = ({
         </IonGrid>
 
         <IonLabel>
-          <p>Version 1.0.20210406</p>
+          <p>Version 1.0.20210407</p>
         </IonLabel>
       </IonContent>
     </IonPage>

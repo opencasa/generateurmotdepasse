@@ -1,9 +1,11 @@
 {
   "characters": [
     {
-      "name": "i",
-      "replacements": ["1","!","|"],
-      "selected": "!",
+      "name": "a",
+      "replacements": ["4","@","à"],
+      "selected": "4",
+      "replacetext": "Remplacer lettre(s) ",
+      "replace": true,
       "id": "0"
     }
   ],
@@ -18,7 +20,6 @@
       "name": "e",
       "replacements": ["3","€","é"],
       "selected": "3",
-
       "id": "5"
     },
     {

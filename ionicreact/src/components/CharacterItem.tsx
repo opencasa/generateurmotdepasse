@@ -1,4 +1,4 @@
-import React from "react";
+import React from "react";//IonToggle,, {useState, useEffect}
 import { Character } from "../models/Character";
 import {
   IonCard,
@@ -15,23 +15,34 @@ import {
 
 interface CharacterItemProps {
   character: Character;
-  onSetCharacterReplacement: (id:number, replace:string) => void;
+  onSetCharacterReplacement: (id: number, replace: string) => void;
 }
 
-const textReplace: string = "Remplacer la lettre ";
-const textSubstition: string = "Choisissez le caractère de substitution :";
 
 const CharacterItem: React.FC<CharacterItemProps> = ({
-  character, onSetCharacterReplacement
+  character,
+  onSetCharacterReplacement,
 }) => {
-  //const [selected, setSelected] = useState<string>(character.selected);
+
+  const textSubstition: string = "Choisissez le caractère de substitution :";
+  /*const [process, setProcess] = useState(false);
+  useEffect(() => {
+    if (process) {
+      onSetCharacterReplacement(character.id, character.selected)
+    } else {
+      onSetCharacterReplacement(character.id, character.name)
+    }
+  }, [process]);*/
 
   return (
     <>
       <IonCard className="category-card">
         <IonCardHeader>
           <IonLabel>
-            <h2>{`${textReplace}`} "{`${character.name}`}"</h2>
+            <h2>
+              {`${character.replacetext}`} "{`${character.name}`}"?
+
+            </h2>
           </IonLabel>
         </IonCardHeader>
         <IonCardContent>
@@ -41,18 +52,23 @@ const CharacterItem: React.FC<CharacterItemProps> = ({
           <IonButtons>
             <IonRadioGroup
               value={character.selected}
-              onIonChange={(e) => onSetCharacterReplacement(character.id, e.detail.value)}
+              onIonChange={(e) =>
+                onSetCharacterReplacement(character.id, e.detail.value)
+              }
             >
               <IonRow>
-
-              {character.replacements.map(replacement => (
-                <IonCol key={replacement}>
-                  <IonItem >
-                    <IonLabel>{replacement}&nbsp;</IonLabel>
-                    <IonRadio mode="md" item-left value={replacement}></IonRadio>
-                  </IonItem>
-                </IonCol>
-                  ))}
+                {character.replacements.map((replacement) => (
+                  <IonCol key={replacement}>
+                    <IonItem>
+                      <IonLabel>{replacement}&nbsp;</IonLabel>
+                      <IonRadio
+                        mode="md"
+                        item-left
+                        value={replacement}
+                      ></IonRadio>
+                    </IonItem>
+                  </IonCol>
+                ))}
               </IonRow>
             </IonRadioGroup>
           </IonButtons>
@@ -63,4 +79,3 @@ const CharacterItem: React.FC<CharacterItemProps> = ({
 };
 
 export default CharacterItem;
-//export default React.memo(CharacterItem);
