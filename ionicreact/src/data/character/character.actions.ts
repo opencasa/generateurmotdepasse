@@ -3,7 +3,7 @@ import { ActionType } from '../../util/types';
 import { CharacterState } from './character.state';
 
 export const loadData = () => async (dispatch: React.Dispatch<any>) => {
-  //const data = await getData();
+  // TODO const data = await getData();
  // dispatch(setData(data));getData,
 }
 

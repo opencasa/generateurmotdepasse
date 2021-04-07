@@ -359,12 +359,7 @@ const Mdp: React.FC<MdpProps> = ({
                           </IonItem>
                         </IonCol>
 
-                        <IonCol>
-                          <IonItem>
-                            <IonLabel>à&nbsp;</IonLabel>
-                            <IonRadio mode="md" item-left value="à"></IonRadio>
-                          </IonItem>
-                        </IonCol>
+
                       </IonRow>
                     </IonRadioGroup>
                   </IonButtons>
@@ -406,12 +401,7 @@ const Mdp: React.FC<MdpProps> = ({
                           </IonItem>
                         </IonCol>
 
-                        <IonCol>
-                          <IonItem>
-                            <IonLabel>é&nbsp;</IonLabel>
-                            <IonRadio mode="md" item-left value="é"></IonRadio>
-                          </IonItem>
-                        </IonCol>
+
                       </IonRow>
                     </IonRadioGroup>
                   </IonButtons>
