@@ -1,10 +1,10 @@
-import { getData, setCharacterReplacementData } from '../dataApi';
+import { setCharacterReplacementData } from '../dataApi';
 import { ActionType } from '../../util/types';
 import { CharacterState } from './character.state';
 
 export const loadData = () => async (dispatch: React.Dispatch<any>) => {
-  const data = await getData();
-  dispatch(setData(data));
+  //const data = await getData();
+ // dispatch(setData(data));getData,
 }
 
 export const setData = (data: Partial<CharacterState>) => ({

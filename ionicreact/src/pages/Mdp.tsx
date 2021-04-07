@@ -67,15 +67,25 @@ const Mdp: React.FC<MdpProps> = ({
   const [generatedPassword, setGeneratedPassword] = useState(
     generatePassword()
   );
-  const [password, setPassword] = useState(""); // test: aaa eee iii ooo
+  const [password, setPassword] = useState(""); // test: aaa ee ii oo u y
   const [newPassword, setNewPassword] = useState("");
   const [tooFewCharsetsError, setTooFewCharsetsError] = useState(true);
   const [tooShortError, setTooShortError] = useState(true);
   const [showToast, setShowToast] = useState(false);
+  const [aSelected, setASelected] = useState<string>("4");
   const [eSelected, setESelected] = useState<string>("3");
   const [iSelected, setISelected] = useState<string>("1");
+  const [oSelected, setOSelected] = useState<string>("0");
+  const [uSelected, setUSelected] = useState<string>("[");
+  const [ySelected, setYSelected] = useState<string>("7");
   const [spaceSelected, setSpaceSelected] = useState<string>("-");
 
+ /* TODO const [processA, setProcessA] = useState(false);
+  const [processE, setProcessE] = useState(false);
+  const [processI, setProcessI] = useState(false);
+  const [processO, setProcessO] = useState(false);
+  const [processU, setProcessU] = useState(false);
+  const [processY, setProcessY] = useState(false);*/
   const [deleteSpaces, setDeleteSpaces] = useState(false);
 
   const inputRef = useRef<any>(null);
@@ -85,21 +95,25 @@ const Mdp: React.FC<MdpProps> = ({
   });
 
   useEffect(() => {
-    console.log(`useEffect characters ${JSON.stringify(characters[0])} `);
+    //console.log(`useEffect characters ${JSON.stringify(characters[0])} `);
     //Replace characters
     const replaceChars = () => {
       let source: string = password; //.toLocaleLowerCase();
-      characters.map((character) => {
+      /* TODO characters.map((character) => {
         for (let i = 0; i < source.length; i++) {
           console.log(`useEffect for ${character.name} ${character.selected} `);
           source = source.replace(character.name, character.selected);
         }
         return "ok";
-      });
+      });*/
 
       for (let i = 0; i < source.length; i++) {
+        source = source.replace("a", aSelected);
         source = source.replace("e", eSelected);
         source = source.replace("i", iSelected);
+        source = source.replace("o", oSelected);
+        source = source.replace("u", uSelected);
+        source = source.replace("y", ySelected);
         if (deleteSpaces) {
           source = source.replace(" ", "");
         } else {
@@ -131,13 +145,25 @@ const Mdp: React.FC<MdpProps> = ({
       setNewPassword(source);
     };
     replaceChars();
-  }, [characters, password, eSelected, iSelected, spaceSelected, deleteSpaces]);
+  }, [characters, password, aSelected, eSelected, iSelected, oSelected, uSelected, ySelected, spaceSelected, deleteSpaces]);
 
+  const changeASelected = (e: string) => {
+    setASelected(e);
+  };
   const changeESelected = (e: string) => {
     setESelected(e);
   };
   const changeISelected = (e: string) => {
     setISelected(e);
+  };
+  const changeOSelected = (e: string) => {
+    setOSelected(e);
+  };
+  const changeUSelected = (e: string) => {
+    setUSelected(e);
+  };
+  const changeYSelected = (e: string) => {
+    setYSelected(e);
   };
   const changeSpaceSelected = (e: string) => {
     setSpaceSelected(e);
@@ -300,6 +326,53 @@ const Mdp: React.FC<MdpProps> = ({
               </IonCol>
             ))}
 
+            {/* a */}
+            <IonCol>
+              <IonCard className="category-card">
+                <IonCardHeader>
+                  <IonLabel>
+                    <h2>{`${textReplace}`} "a"?</h2>
+                  </IonLabel>
+                </IonCardHeader>
+                <IonCardContent>
+                  <IonLabel>
+                    <h2>{`${textSubstition}`}</h2>
+                  </IonLabel>
+                  <IonButtons>
+                    <IonRadioGroup
+                      value={aSelected}
+                      onIonChange={(e) => changeASelected(e.detail.value)}
+                    >
+                      <IonRow>
+
+                        <IonCol>
+                          <IonItem>
+                            <IonLabel>4&nbsp;</IonLabel>
+                            <IonRadio mode="md" item-left value="4"></IonRadio>
+                          </IonItem>
+                        </IonCol>
+
+                        <IonCol>
+                          <IonItem>
+                            <IonLabel>@&nbsp;</IonLabel>
+                            <IonRadio mode="md" item-left value="@"></IonRadio>
+                          </IonItem>
+                        </IonCol>
+
+                        <IonCol>
+                          <IonItem>
+                            <IonLabel>à&nbsp;</IonLabel>
+                            <IonRadio mode="md" item-left value="à"></IonRadio>
+                          </IonItem>
+                        </IonCol>
+                      </IonRow>
+                    </IonRadioGroup>
+                  </IonButtons>
+                </IonCardContent>
+              </IonCard>
+            </IonCol>
+
+
             {/* e */}
             <IonCol>
               <IonCard className="category-card">
@@ -389,6 +462,145 @@ const Mdp: React.FC<MdpProps> = ({
                 </IonCardContent>
               </IonCard>
             </IonCol>
+
+
+            {/* o */}
+            <IonCol>
+              <IonCard className="category-card">
+                <IonCardHeader>
+                  <IonLabel>
+                    <h2>{`${textReplace}`} "o"?</h2>
+                  </IonLabel>
+                </IonCardHeader>
+                <IonCardContent>
+                  <IonLabel>
+                    <h2>{`${textSubstition}`}</h2>
+                  </IonLabel>
+                  <IonButtons>
+                    <IonRadioGroup
+                      value={oSelected}
+                      onIonChange={(e) => changeOSelected(e.detail.value)}
+                    >
+                      <IonRow>
+
+                        <IonCol>
+                          <IonItem>
+                            <IonLabel>0&nbsp;</IonLabel>
+                            <IonRadio mode="md" item-left value="0"></IonRadio>
+                          </IonItem>
+                        </IonCol>
+
+                        <IonCol>
+                          <IonItem>
+                            <IonLabel>*&nbsp;</IonLabel>
+                            <IonRadio mode="md" item-left value="*"></IonRadio>
+                          </IonItem>
+                        </IonCol>
+
+                        <IonCol>
+                          <IonItem>
+                            <IonLabel>%&nbsp;</IonLabel>
+                            <IonRadio mode="md" item-left value="%"></IonRadio>
+                          </IonItem>
+                        </IonCol>
+                      </IonRow>
+                    </IonRadioGroup>
+                  </IonButtons>
+                </IonCardContent>
+              </IonCard>
+            </IonCol>
+
+
+            {/* u */}
+            <IonCol>
+              <IonCard className="category-card">
+                <IonCardHeader>
+                  <IonLabel>
+                    <h2>{`${textReplace}`} "u"?</h2>
+                  </IonLabel>
+                </IonCardHeader>
+                <IonCardContent>
+                  <IonLabel>
+                    <h2>{`${textSubstition}`}</h2>
+                  </IonLabel>
+                  <IonButtons>
+                    <IonRadioGroup
+                      value={uSelected}
+                      onIonChange={(e) => changeUSelected(e.detail.value)}
+                    >
+                      <IonRow>
+
+                        <IonCol>
+                          <IonItem>
+                            <IonLabel>[&nbsp;</IonLabel>
+                            <IonRadio mode="md" item-left value="["></IonRadio>
+                          </IonItem>
+                        </IonCol>
+
+                        <IonCol>
+                          <IonItem>
+                            <IonLabel>(&nbsp;</IonLabel>
+                            <IonRadio mode="md" item-left value="("></IonRadio>
+                          </IonItem>
+                        </IonCol>
+
+                        <IonCol>
+                          <IonItem>
+                            <IonLabel>)&nbsp;</IonLabel>
+                            <IonRadio mode="md" item-left value=")"></IonRadio>
+                          </IonItem>
+                        </IonCol>
+                      </IonRow>
+                    </IonRadioGroup>
+                  </IonButtons>
+                </IonCardContent>
+              </IonCard>
+            </IonCol>
+
+
+            {/* y */}
+            <IonCol>
+              <IonCard className="category-card">
+                <IonCardHeader>
+                  <IonLabel>
+                    <h2>{`${textReplace}`} "y"?</h2>
+                  </IonLabel>
+                </IonCardHeader>
+                <IonCardContent>
+                  <IonLabel>
+                    <h2>{`${textSubstition}`}</h2>
+                  </IonLabel>
+                  <IonButtons>
+                    <IonRadioGroup
+                      value={ySelected}
+                      onIonChange={(e) => changeYSelected(e.detail.value)}
+                    >
+                      <IonRow>
+
+                        <IonCol>
+                          <IonItem>
+                            <IonLabel>7&nbsp;</IonLabel>
+                            <IonRadio mode="md" item-left value="7"></IonRadio>
+                          </IonItem>
+                        </IonCol>
+
+                        <IonCol>
+                          <IonItem>
+                            <IonLabel>^&nbsp;</IonLabel>
+                            <IonRadio mode="md" item-left value="^"></IonRadio>
+                          </IonItem>
+                        </IonCol>
+
+
+                      </IonRow>
+                    </IonRadioGroup>
+                  </IonButtons>
+                </IonCardContent>
+              </IonCard>
+            </IonCol>
+
+
+
 
             {/* space */}
             <IonCol>
