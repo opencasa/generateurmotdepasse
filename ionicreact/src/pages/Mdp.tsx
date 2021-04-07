@@ -251,10 +251,12 @@ const Mdp: React.FC<MdpProps> = ({
                       color="success"
                       onClick={() => copyToClipboard()}
                     >
-                      <IonIcon color="light" icon={clipboard}></IonIcon>
+                      <IonIcon color="light" icon={clipboard}></IonIcon><IonText className="ion-text-lowercase" >
+                    Copier
+                    </IonText>
                     </IonButton>
                     <IonText color="success">
-                      &nbsp;Respecte la complexité requise de 3 jeux de
+                    &nbsp;Copier dans le presse-papiers.&nbsp;<br/>Respecte la complexité requise de 3 jeux de
                       caractères distincts.
                     </IonText>
                   </>
