@@ -3,7 +3,7 @@ import { Character } from '../models/Character';
 
 const { Storage } = Plugins;
 
-const dataUrl = '/assets/data/data.json';
+const dataUrl = '/assets/data/lettres.json';
 
 const DARKMODE = 'darkMode';
 
