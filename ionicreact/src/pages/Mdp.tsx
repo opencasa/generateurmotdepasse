@@ -446,16 +446,7 @@ const Mdp: React.FC<MdpProps> = ({
                                 ></IonRadio>
                               </IonItem>
                             </IonCol>
-                            <IonCol>
-                              <IonItem>
-                                <IonLabel>~&nbsp;</IonLabel>
-                                <IonRadio
-                                  mode="md"
-                                  item-left
-                                  value="~"
-                                ></IonRadio>
-                              </IonItem>
-                            </IonCol>
+
                           </IonRow>
                         </IonRadioGroup>
                       </IonButtons>
