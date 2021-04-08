@@ -23,7 +23,13 @@ import {
   IonToast,
   IonText,
 } from "@ionic/react";
-import { sunny, moon, clipboard,  refresh, clipboardOutline } from "ionicons/icons";
+import {
+  sunny,
+  moon,
+  clipboard,
+  refresh,
+  clipboardOutline,
+} from "ionicons/icons";
 
 import "./Mdp.scss";
 import { Character } from "../models/Character";
@@ -225,12 +231,13 @@ const Mdp: React.FC<MdpProps> = ({
             <IonCol>
               <p>{generatedPassword}</p>
             </IonCol>
-            <IonCol><IonButton
+            <IonCol>
+              <IonButton
                 color="success"
                 onClick={() => copyRandomToClipboard()}
               >
                 <IonIcon color="light" icon={clipboardOutline}></IonIcon>
-                <IonText >Copier</IonText>
+                <IonText>Copier</IonText>
               </IonButton>
               <IonButton
                 color="warning"
@@ -239,9 +246,7 @@ const Mdp: React.FC<MdpProps> = ({
                 <IonIcon color="light" icon={refresh}></IonIcon>
               </IonButton>
 
-              <IonText color="success">
-                &nbsp;
-              </IonText>
+              <IonText color="success">&nbsp;</IonText>
             </IonCol>
           </IonRow>
           <IonRow>
@@ -603,11 +608,11 @@ const Mdp: React.FC<MdpProps> = ({
 
                             <IonCol>
                               <IonItem>
-                                <IonLabel>%&nbsp;</IonLabel>
+                                <IonLabel>O&nbsp;</IonLabel>
                                 <IonRadio
                                   mode="md"
                                   item-left
-                                  value="%"
+                                  value="O"
                                 ></IonRadio>
                               </IonItem>
                             </IonCol>
@@ -732,7 +737,17 @@ const Mdp: React.FC<MdpProps> = ({
 
                             <IonCol>
                               <IonItem>
-                                <IonLabel>^&nbsp;</IonLabel>
+                                <IonLabel>?&nbsp;</IonLabel>
+                                <IonRadio
+                                  mode="md"
+                                  item-left
+                                  value="?"
+                                ></IonRadio>
+                              </IonItem>
+                            </IonCol>
+                            <IonCol>
+                              <IonItem>
+                                <IonLabel>Y&nbsp;</IonLabel>
                                 <IonRadio
                                   mode="md"
                                   item-left
