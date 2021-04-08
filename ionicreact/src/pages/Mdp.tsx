@@ -26,7 +26,6 @@ import {
 import {
   sunny,
   moon,
-  clipboard,
   refresh,
   clipboardOutline,
 } from "ionicons/icons";
@@ -313,12 +312,11 @@ const Mdp: React.FC<MdpProps> = ({
                       color="success"
                       onClick={() => copyToClipboard()}
                     >
-                      <IonIcon color="light" icon={clipboard}></IonIcon>
-                      <IonText className="ion-text-lowercase">Copier</IonText>
+                      <IonIcon color="light" icon={clipboardOutline}></IonIcon>
+                      <IonText >Copier</IonText>
                     </IonButton>
                     <IonText color="success">
-                      &nbsp;Copier dans le presse-papiers.&nbsp;
-                      <br />
+                      &nbsp;
                       Respecte la complexité requise de 3 jeux de caractères
                       distincts.
                     </IonText>
@@ -858,7 +856,7 @@ const Mdp: React.FC<MdpProps> = ({
         </IonGrid>
 
         <IonLabel>
-          <p>Version 1.0.20210407</p>
+          <p>Version 1.0.20210408</p>
         </IonLabel>
       </IonContent>
     </IonPage>
