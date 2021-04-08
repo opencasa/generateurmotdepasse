@@ -23,7 +23,7 @@ import {
   IonToast,
   IonText,
 } from "@ionic/react";
-import { sunny, moon, clipboard, refresh } from "ionicons/icons";
+import { sunny, moon, clipboard,  refresh, clipboardOutline } from "ionicons/icons";
 
 import "./Mdp.scss";
 import { Character } from "../models/Character";
@@ -225,22 +225,22 @@ const Mdp: React.FC<MdpProps> = ({
             <IonCol>
               <p>{generatedPassword}</p>
             </IonCol>
-            <IonCol>
+            <IonCol><IonButton
+                color="success"
+                onClick={() => copyRandomToClipboard()}
+              >
+                <IonIcon color="light" icon={clipboardOutline}></IonIcon>
+                <IonText >Copier</IonText>
+              </IonButton>
               <IonButton
                 color="warning"
                 onClick={() => setGeneratedPassword(generatePassword())}
               >
                 <IonIcon color="light" icon={refresh}></IonIcon>
               </IonButton>
-              <IonButton
-                color="success"
-                onClick={() => copyRandomToClipboard()}
-              >
-                <IonIcon color="light" icon={clipboard}></IonIcon>
-                <IonText className="ion-text-lowercase">Copier</IonText>
-              </IonButton>
+
               <IonText color="success">
-                &nbsp;Copier dans le presse-papiers.
+                &nbsp;
               </IonText>
             </IonCol>
           </IonRow>
