@@ -23,12 +23,7 @@ import {
   IonToast,
   IonText,
 } from "@ionic/react";
-import {
-  sunny,
-  moon,
-  refresh,
-  clipboardOutline,
-} from "ionicons/icons";
+import { sunny, moon, refresh, clipboardOutline } from "ionicons/icons";
 
 import "./Mdp.scss";
 import { Character } from "../models/Character";
@@ -270,7 +265,15 @@ const Mdp: React.FC<MdpProps> = ({
                 ></IonInput>{" "}
               </form>
             </IonCol>
-            <IonCol></IonCol>
+            <IonCol>
+              {tooShortError ? (
+                <IonText color="warning">
+                  <br />* Trop court (12 caractères minimum).&nbsp;
+                </IonText>
+              ) : (
+                <IonText color="success">&nbsp; Taille correcte.</IonText>
+              )}
+            </IonCol>
           </IonRow>
           <IonRow>
             <IonCol>
@@ -295,33 +298,22 @@ const Mdp: React.FC<MdpProps> = ({
               ></IonInput>
             </IonCol>
             <IonCol>
-              {tooFewCharsetsError && (
+              {tooFewCharsetsError ? (
                 <IonText color="danger">
                   * 3 jeux de caractères requis parmi minuscules, majuscules,
                   chiffres, symboles.&nbsp;
                 </IonText>
-              )}
-              {tooShortError ? (
-                <IonText color="warning">
-                  <br />* Trop court (12 caractères minimum).&nbsp;
-                </IonText>
               ) : (
-                !tooFewCharsetsError && (
-                  <>
-                    <IonButton
-                      color="success"
-                      onClick={() => copyToClipboard()}
-                    >
-                      <IonIcon color="light" icon={clipboardOutline}></IonIcon>
-                      <IonText >Copier</IonText>
-                    </IonButton>
-                    <IonText color="success">
-                      &nbsp;
-                      Respecte la complexité requise de 3 jeux de caractères
-                      distincts.
-                    </IonText>
-                  </>
-                )
+                <>
+                  <IonButton color="success" onClick={() => copyToClipboard()}>
+                    <IonIcon color="light" icon={clipboardOutline}></IonIcon>
+                    <IonText>Copier</IonText>
+                  </IonButton>
+                  <IonText color="success">
+                    &nbsp; Respecte la complexité requise de 3 jeux de
+                    caractères distincts.
+                  </IonText>
+                </>
               )}
             </IonCol>
           </IonRow>
@@ -856,7 +848,7 @@ const Mdp: React.FC<MdpProps> = ({
         </IonGrid>
 
         <IonLabel>
-          <p>Version 1.0.20210408</p>
+          <p>Version 1.0.20210409</p>
         </IonLabel>
       </IonContent>
     </IonPage>

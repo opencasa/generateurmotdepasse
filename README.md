@@ -1,6 +1,6 @@
-# generateurmotdepasse
+# Générateur de mot de passe sécurisé
 
-## développement local
+## Développement local
 * `git clone repository`
 * `cd nodejs`
 * `npm install`
@@ -10,16 +10,17 @@
 * `pm2 start ./bin/www  --watch`
 * `pm2 startup`
 
-## déploiement en production 
+## Déploiement en production 
 * `cd ~/generateurmotdepasse/`
 * `git pull`
 * `cd ~/generateurmotdepasse/ionicreact/`
 * `npm run build`
 * `cp -R ~/generateurmotdepasse/ionicreact/build/* ~/generateurmotdepasse/nodejs/public/`
 
-## stack technique:
+## Stack technique:
 
-	sur 172.16.2.20 : nginx nodejs pm2
-	git commit/push du poste de dev vers github puis git pull manuel sur repo puis copie de fichiers (npm run build dans le dossier ionicreact)
-	sur azure : static web app
-	git commit/push du poste de dev vers github puis chaine CI/CD automatique, si pas erreur mise en prod
+Sur un serveur local : nginx nodejs pm2
+git commit/push du poste de dev vers github puis git pull manuel sur repo puis copie de fichiers (npm run build dans le dossier ionicreact)
+
+Sur Azure : Static Web App
+git commit/push du poste de dev vers github puis chaine CI/CD automatique, si pas d'erreur mise en production
