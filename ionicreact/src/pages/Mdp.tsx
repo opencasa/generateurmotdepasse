@@ -34,15 +34,19 @@ import generateur from "generate-password";
 import CharacterItem from "../components/CharacterItem";
 
 // MSAL MGT
-import MgtPwdLastUpdate from '../components/MgtPwdLastUpdate';
+import MgtPwdLastUpdate from "../components/MgtPwdLastUpdate";
 import { Get, MgtTemplateProps, Login } from "@microsoft/mgt-react";
-import { Providers, ProviderState, LocalizationHelper } from '@microsoft/mgt-element';
+import {
+  Providers,
+  ProviderState,
+  LocalizationHelper,
+} from "@microsoft/mgt-element";
 import * as MicrosoftGraph from "@microsoft/microsoft-graph-types";
 
 LocalizationHelper.strings = {
   noResultsFound: "Introuvable",
   _components: {
-    "login": {
+    login: {
       signInLinkSubtitle: "Connexion",
       signOutLinkSubtitle: "Déconnexion",
     },
@@ -264,11 +268,7 @@ const Mdp: React.FC<MdpProps> = ({
         <IonGrid fixed>
           <IonRow>
             <IonCol>
-              <Login
-                className="mgt-dark"
-                logoutCompleted={(e) => setLogoutCompleted(e)}
-                loginCompleted={(e) => setLoginCompleted(e)}
-              />
+
               {isSignedIn && (
                 <>
                   <Get resource="me" scopes={["user.read"]}>
@@ -277,6 +277,14 @@ const Mdp: React.FC<MdpProps> = ({
                   <MgtPwdLastUpdate />
                 </>
               )}
+            </IonCol>
+            <IonCol>
+              <Login
+                className="mgt-dark"
+                logoutCompleted={(e) => setLogoutCompleted(e)}
+                loginCompleted={(e) => setLoginCompleted(e)}
+              />
+
             </IonCol>
           </IonRow>
 
