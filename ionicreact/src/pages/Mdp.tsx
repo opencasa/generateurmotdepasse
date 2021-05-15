@@ -33,6 +33,21 @@ import { setCharacterReplacement } from "../data/character/character.actions";
 import generateur from "generate-password";
 import CharacterItem from "../components/CharacterItem";
 
+// MSAL MGT
+import MgtPwdLastUpdate from '../components/MgtPwdLastUpdate';
+import { Get, MgtTemplateProps, Login } from "@microsoft/mgt-react";
+import { Providers, ProviderState, LocalizationHelper } from '@microsoft/mgt-element';
+import * as MicrosoftGraph from "@microsoft/microsoft-graph-types";
+
+LocalizationHelper.strings = {
+  noResultsFound: "Introuvable",
+  _components: {
+    "login": {
+      signInLinkSubtitle: "Connexion",
+      signOutLinkSubtitle: "Déconnexion",
+    },
+  },
+};
 interface StateProps {
   characters: Character[];
   darkMode: boolean;
@@ -196,7 +211,38 @@ const Mdp: React.FC<MdpProps> = ({
     navigator.clipboard.writeText(generatedPassword);
     setShowToast(true);
   };
+  const setLoginCompleted = (e: Event) => async () => {
+    console.log(`setLoginCompleted: ${JSON.stringify(e)}`);
+    return null;
+  };
+  const setLogoutCompleted = (e: Event) => async () => {
+    console.log(`setLogoutCompleted: ${JSON.stringify(e)}`);
+    return null;
+  };
+  function useIsSignedIn(): [boolean] {
+    const [isSignedIn, setIsSignedIn] = useState(false);
 
+    useEffect(() => {
+      const updateState = () => {
+        const provider = Providers.globalProvider;
+        setIsSignedIn(provider && provider.state === ProviderState.SignedIn);
+      };
+      Providers.onProviderUpdated(updateState);
+      updateState();
+      return () => {
+        Providers.removeProviderUpdatedListener(updateState);
+      };
+    }, []);
+    return [isSignedIn];
+  }
+
+  const [isSignedIn] = useIsSignedIn();
+  const MyTemplate = (props: MgtTemplateProps) => {
+    const me = props.dataContext as MicrosoftGraph.User;
+    //console.log(`Moi: ${JSON.stringify(me)}`);
+
+    return <div>Bienvenue {me.givenName}</div>;
+  };
   return (
     <IonPage id="mdp-page">
       <IonHeader>
@@ -216,6 +262,24 @@ const Mdp: React.FC<MdpProps> = ({
       </IonHeader>
       <IonContent>
         <IonGrid fixed>
+          <IonRow>
+            <IonCol>
+              <Login
+                className="mgt-dark"
+                logoutCompleted={(e) => setLogoutCompleted(e)}
+                loginCompleted={(e) => setLoginCompleted(e)}
+              />
+              {isSignedIn && (
+                <>
+                  <Get resource="me" scopes={["user.read"]}>
+                    <MyTemplate />
+                  </Get>
+                  <MgtPwdLastUpdate />
+                </>
+              )}
+            </IonCol>
+          </IonRow>
+
           <IonRow>
             <IonCol>
               <strong>Mot de passe aléatoire proposé:</strong>
@@ -848,7 +912,7 @@ const Mdp: React.FC<MdpProps> = ({
         </IonGrid>
 
         <IonLabel>
-          <p>Version 1.0.20210409</p>
+          <p>Version 1.0.20210515</p>
         </IonLabel>
       </IonContent>
     </IonPage>
